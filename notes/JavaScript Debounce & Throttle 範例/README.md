@@ -13,5 +13,6 @@
 - 適合用於限制高頻事件（如捲動、調整視窗大小等）的執行次數
 
 ## 操作範例
+- [範例頁面](https://acc2git.github.io/dev-toolkit-and-notes/notes/JavaScript%20Debounce%20&%20Throttle%20%E7%AF%84%E4%BE%8B/)
 - 點選 「顯示訊息 debounce」 ，會在最後一次點選 1 秒後才顯示訊息
 - 點選 「顯示訊息 throttle」 ，會在 1 秒內限制訊息顯示一次
