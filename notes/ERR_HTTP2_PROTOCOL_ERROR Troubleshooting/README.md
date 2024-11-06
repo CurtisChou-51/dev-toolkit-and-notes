@@ -11,10 +11,11 @@
 - 其他功能回應正常
 - 此狀況只發生在特定請求發生異常時
 - 系統使用自定義的 ExceptionHandlingMiddleware 處理異常
-
+![](02.png)
 
 ## 主要問題
 
+在開發環境將 UseMiddleware 啟用，自己手動拋出 Exception 後重現此錯誤
 問題出在 `ExceptionHandlingMiddleware.cs` 的錯誤處理邏輯中：
 
 ```csharp
@@ -43,6 +44,9 @@ private void HandleExceptionAsync(HttpContext context, Exception exception)
 
 1. 在同一個 Response 中同時調用了 WriteAsync 和 Redirect
 2. HTTP/2 協議不允許在已經開始寫入 Response Body 後再修改 Response Header
+
+- 事件檢視器也有顯示這個錯誤訊息
+![](03.png)
 
 ## 問題修正
 
