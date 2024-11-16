@@ -14,4 +14,5 @@ Git Reset 是用來將目前的 HEAD 移動到指定的 commit，主要有三種
 - --hard：清空工作目錄和暫存區
 
 ## 參考
-[【狀況題】剛才的 Commit 後悔了，想要拆掉重做…](https://gitbook.tw/chapters/using-git/reset-commit)
+- [【狀況題】剛才的 Commit 後悔了，想要拆掉重做…](https://gitbook.tw/chapters/using-git/reset-commit)
+- [How to use Git with Visual Studio 2022 (Step by step)](https://www.youtube.com/watch?v=8zSVvTQXSIc)
