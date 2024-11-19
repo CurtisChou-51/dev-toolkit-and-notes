@@ -1,4 +1,4 @@
-#SQL Server grouping sets
+# SQL Server grouping sets
 
 - grouping sets 是 SQL Server 中的一個進階分組功能，允許在單一查詢中同時執行多個 group by
 - 原本需要多個 group by 之後再 union 的查詢可一次完成
