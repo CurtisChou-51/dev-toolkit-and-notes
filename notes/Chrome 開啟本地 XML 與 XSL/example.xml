@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet type="text/xsl" href="example.xsl"?>
+<root>
+    <item>
+        <name>範例項目1</name>
+        <value>示範內容1</value>
+    </item>
+    <item>
+        <name>範例項目2</name>
+        <value>示範內容2</value>
+    </item>
+</root>
