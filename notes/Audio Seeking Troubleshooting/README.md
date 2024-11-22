@@ -30,3 +30,5 @@ public IActionResult GetAudio(long FileId)
 - 修改後回應 status code 為 206，可正常設定 currentTime
 ![](02.png)
 ![](03.png)
+
+- 範例：[ExampleController](ExampleController.cs)
