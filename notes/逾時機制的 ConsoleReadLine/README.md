@@ -1,6 +1,7 @@
 # 逾時機制的 ConsoleReadLine
 
-- 此 C# ConsoleApp 提供逾時機制的 ConsoleReadLine 範例，但是也存在一些問題
+- 此 C# ConsoleApp 提供逾時機制的 ConsoleReadLine [範例](Program.cs)，但是也存在一些問題
+![](01.png)
 
 ## `Console.In.ReadLineAsync()` 特性
 - 該方法實際上**不會**真正取消輸入作業
