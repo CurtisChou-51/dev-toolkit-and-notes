@@ -71,3 +71,7 @@ model.SearchResult = DataTableToModels<XXXResultModel>(data);  // 反射將 Data
 在不更動現有架構的前提下採用以下優化：
 1. 使用 foreach 遍歷，不需要使用 `ElementAt(i)` 存取
 2. 在反射轉換後立即呼叫 `ToList()` 確保集合具體化
+
+## 範例
+
+可透過此範例看出效能差異：[example](example.linq)
