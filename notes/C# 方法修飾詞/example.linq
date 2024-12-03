@@ -7,7 +7,7 @@ void Main()
     ((Parent)obj).Speak1();
 
     obj.Speak2();
-	((Parent)obj).Speak2(); // 編譯期類型是 Parent，執行的不是 Child 的 Speak2
+    ((Parent)obj).Speak2(); // 編譯期類型是 Parent，執行的不是 Child 的 Speak2
 }
 
 public interface ISpeak
