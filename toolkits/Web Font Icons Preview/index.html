@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="utf-8" />
+    <title>Web Font Icons Preview</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            max-width: 600px;
+            padding: 20px;
+            text-align: center;
+        }
+        input, button {
+            margin: 10px;
+            padding: 5px;
+        }
+        .targetText {
+            border: 2px solid #3498db;
+            padding: 10px;
+            font-size: 24px;
+            width: 50%;
+            height: 30px;
+        }
+        .row {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Web Font Icons Preview</h1>
+    <input type="text" id="unicodeInput" placeholder="16進制Unicode" value="\uF72E">
+    <button onclick="preview()">Preview</button>
+    <div class="row">
+        <div>
+        <h3>
+            <a href="https://icons.getbootstrap.com" target="_blank">bootstrap-icons 1.11.3</a>
+        </h3>
+        </div>
+        <div class="targetText">
+            <span style="font-family: 'bootstrap-icons'" id="bs-preview"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div>
+        <h3>
+            <a href="https://fontawesome.com/v5/search" target="_blank">font-awesome 5.15.4</a>
+        </h3>
+        </div>
+        <div class="targetText">
+            <span class="fas" id="fa-preview"></span>
+        </div>
+    </div>
+
+    <script>
+        function preview() {
+            try {
+                let cleanInput = document.getElementById('unicodeInput').value.replace(/^(0x|\\u)/i, '');
+                let unicodeChar = String.fromCodePoint(parseInt(cleanInput, 16));
+                document.getElementById('fa-preview').innerText = unicodeChar;
+                document.getElementById('bs-preview').innerText = unicodeChar;
+            }
+            catch (error) {
+                alert('Invalid Unicode input');
+            }
+        }
+    </script>
+</body>
+</html>
