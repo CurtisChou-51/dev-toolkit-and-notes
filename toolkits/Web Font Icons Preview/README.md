@@ -15,14 +15,19 @@
 
 ### 1. 輸入 16 進制 Unicode
 - Unicode 可以在對應的 Bootstrap Icons 或 Font Awesome 網站查詢
+  - Bootstrap Icons：[查詢示意圖](#bootstrap-icons-網站查詢)
+  - Font Awesome：[查詢示意圖](#font-awesome-網站查詢)
 
 ### 2. 點選 Preview
 - 點選後會在下方顯示結果
 
+
 ## Bootstrap Icons 網站查詢
-- 進入查詢頁面找到 Icon 之後點選，在該 Icon 明細頁面的 Code Point 可複製
+
+- 進入[查詢頁面](https://icons.getbootstrap.com) 找到 Icon 之後點選，在該 Icon 明細頁面的 Code Point 可複製
 ![](02.png)
 
 ## Font Awesome 網站查詢
-- 進入查詢頁面找到 Icon 之後點選，在該 Icon 明細頁面的右上方可複製
+
+- 進入[查詢頁面](https://fontawesome.com/v5/search) 找到 Icon 之後點選，在該 Icon 明細頁面的右上方可複製
 ![](03.png)
