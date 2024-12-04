@@ -18,3 +18,11 @@
 
 ### 2. 點選 Preview
 - 點選後會在下方顯示結果
+
+## Bootstrap Icons 網站查詢
+- 進入查詢頁面找到 Icon 之後點選，在該 Icon 明細頁面的 Code Point 可複製
+![](02.png)
+
+## Font Awesome 網站查詢
+- 進入查詢頁面找到 Icon 之後點選，在該 Icon 明細頁面的右上方可複製
+![](03.png)
