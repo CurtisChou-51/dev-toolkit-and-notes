@@ -6,7 +6,7 @@
 
 - 現代 CSS 提供了 `field-sizing: content` 屬性，能根據內容自動調整高度，然而 `field-sizing` 屬性是一個相對較新的 CSS 特性，目前仍是實驗性質，尚未得到所有瀏覽器的完全支援
 - 目前 Visual Studio 也標記不是個已知的 CSS 屬性  
-![01.png]
+![](01.png)
 
 ## 解決方案
 
