@@ -6,7 +6,7 @@
 
 - 範例檔：[example.sql](example.sql)
 
-1. 檢查資料表是否存在，不存在則建立
+### 1. 檢查資料表是否存在，不存在則建立
 
 ```sql
 if not exists (select 1
@@ -22,7 +22,7 @@ begin
 end;
 ```
 
-2. 檢查欄位是否存在，不存在則新增
+### 2. 檢查欄位是否存在，不存在則新增
 
 ```sql
 if not exists (select 1 
@@ -34,7 +34,7 @@ begin
 end;
 ```
 
-3. 修改欄位
+### 3. 修改欄位
 ```sql
 alter table XXXTable alter column XXXColumn Nvarchar(30) null;
 ```

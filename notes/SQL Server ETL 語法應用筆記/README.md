@@ -7,7 +7,7 @@
 
 - 範例檔：[example.sql](example.sql)
 
-1. `select into temp table`
+### 1. `select into temp table`
 
 - 使用 `select ... into` 快速建立臨時表，可以不需預先定義結構
 
@@ -18,7 +18,7 @@ select Col_1, Col_2
  where Col_1 = 'xxx';
 ```
 
-2. `insert into select`
+### 2. `insert into select`
 
 - 將 `select` 結果批次新增到目標資料表
 
@@ -30,7 +30,7 @@ select Col_1, Col_2
  where Col_1 = 'xxx';
 ```
 
-3. `drop temp table`
+### 3. `drop temp table`
 
 - 安全刪除臨時表，`if exists` 確保不會因表不存在而報錯
 
@@ -38,7 +38,7 @@ select Col_1, Col_2
 drop table if exists #XXXTmpTable;
 ```
 
-4. `merge into output`
+### 4. `merge into output`
 
 - 使用 `merge into` 用於批次資料更新
 - `output` 可以捕捉被 `insert` 或 `update` 的資料，而 `into #ChangeResult_XXXTable` 需要預先定義結構
@@ -59,7 +59,7 @@ when not matched then
 output inserted.Id, inserted.Col_1, inserted.Col_2, inserted.Col_3 into #ChangeResult_XXXTable;
 ```
 
-5. `values clause`
+### 5. `values clause`
 
 - `values` 語法可寫多筆資料，不需要寫為多個 `insert`，但是也會有筆數限制
 
@@ -72,7 +72,7 @@ values
   ('3', 'C');
 ```
 
-6. `delete from join`
+### 6. `delete from join`
 
 - 可以找出符合條件的資料並刪除，語法也可以加入 `join` 來過濾符合條件的資料
 
