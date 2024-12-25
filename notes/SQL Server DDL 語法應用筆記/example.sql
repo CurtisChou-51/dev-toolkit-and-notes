@@ -23,3 +23,8 @@ end;
 
 /* 修改欄位 */
 alter table XXXTable alter column XXXColumn Nvarchar(30) null;
+
+
+/* 動態 SQL drop table */
+declare @sql nvarchar(max) = 'drop table if exists ' + @TableName;
+exec sp_executesql @sql;
