@@ -38,3 +38,9 @@ end;
 ```sql
 alter table XXXTable alter column XXXColumn Nvarchar(30) null;
 ```
+
+### 4. 動態 SQL drop table
+```sql
+declare @sql nvarchar(max) = 'drop table if exists ' + @TableName;
+exec sp_executesql @sql;
+```
