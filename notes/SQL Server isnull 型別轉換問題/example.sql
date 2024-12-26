@@ -1,4 +1,3 @@
-drop table if exists #tmpNameMap;
 
 select cast(null as varchar(100)) as old_name, 
        cast(null as varchar(100)) as new_name 
