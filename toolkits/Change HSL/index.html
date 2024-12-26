@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Change HSL</title>
+</head>
+<body style="margin: 20px">
+    <h1>Change HSL</h1>
+    <input type="file" id="imageInput" accept="image/*" />
+    <p>
+        圖片預覽：
+        <canvas id="canvas" style="display:none"></canvas>
+    </p>
+    <div style="display: flex; gap: 1.5rem;">
+        <div>
+            <label for="selectedColor">選擇顏色：</label>
+            <input type="color" id="selectedColor" value="#ffffff">
+        </div>
+        <div>
+            <label for="targetColor">目標顏色：</label>
+            <input type="color" id="targetColor" value="#ffffff">
+        </div>
+    </div>
+
+    <h3>HSL差異</h3>
+    <table>
+        <tr>
+            <td>Hue Rotate：</td>
+            <td><input id="hueRotateInput" type="number" /></td>
+        </tr>
+        <tr>
+            <td>Saturate Rate：</td>
+            <td><input id="saturateInput" type="number" /></td>
+        </tr>
+        <tr>
+            <td>Lightness Rate：</td>
+            <td><input id="lightnessInput" type="number" /></td>
+        </tr>
+        <tr>
+            <td><button id="convertBtn" type="button">convert</button></td>
+            <td></td>
+        </tr>
+    </table>
+
+    <p>
+        處理後的圖片：<br>
+        <img id="outputImage" />
+    </p>
+    <script src="color.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>
