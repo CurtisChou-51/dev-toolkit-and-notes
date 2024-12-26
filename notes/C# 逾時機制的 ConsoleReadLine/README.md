@@ -1,4 +1,4 @@
-# 逾時機制的 ConsoleReadLine
+# C# 逾時機制的 ConsoleReadLine
 
 - 此 C# ConsoleApp 提供逾時機制的 ConsoleReadLine [範例](Program.cs)，但是也存在一些問題
 ![](01.png)
