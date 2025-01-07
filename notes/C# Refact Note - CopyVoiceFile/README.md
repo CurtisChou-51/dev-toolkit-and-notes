@@ -5,13 +5,13 @@
 ## 重構描述
 
 - 拆分為小方法，使主流程更專注於高層處理：
-  - `CopyLREncwav`: 檢查並複製未處理檔案
-  - `EncwavToMonoWav`: 處理檔案的解密及格式轉換
+  - `CopyLREncwav`: 檢查並複製未處理檔案到本地，並回傳檔案的 `FileInfo`
+  - `EncwavToMonoWav`: 處理檔案的解密及格式轉換，並回傳檔案的 `FileInfo`
   - `MergeTwoWavFiles`: 合併左聲道與右聲道檔案
 
-- 資料流調整，將檔案轉換為對應的類別傳遞，而非重新讀取硬碟檔案狀態：
-  - 原為 `GetFiles("*.encwav")` 之後手動拼接副檔名，取得要處理的 WAV
-  - 改為使用 `EncwavToMonoWav` 與 `LINQ`，直接取得要處理的 WAV
+- 資料流調整，更明確的相依關係，由程式結構反映出操作之間的邏輯：
+  - 原為複製檔案結束後使用 `GetFiles("*.encwav")` 再手動替換副檔名來操作 `wavFiles`。**如此依賴於先前複製檔案的操作，此為隱含的相依性，需要仔細追蹤流程才能理解為什麼這裡要掃描檔案，還要推斷掃描結果應該包含什麼**
+  - 改為使用 LINQ 配合上述方法 `CopyLREncwav`、`EncwavToMonoWav` 回傳的 `FileInfo` 取得 `wavFiles`。**如此明確展示了資料流：複製檔案 → 轉換格式，將已知的資訊直接傳遞而非重新搜尋，清楚地展示其輸入來自哪裡**
 
 - 引入區域變數，如 `FileHelper.Copy` 的參數，減少錯誤發生機會
 
