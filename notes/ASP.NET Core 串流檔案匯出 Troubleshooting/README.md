@@ -8,10 +8,12 @@
   - Controller Action 中的 try-catch
   - 全域 Middleware 中的 try-catch
 
-- 但是在 `ILogger` 則有輸出相關訊息
+- 但是在 `ILogger` 則有輸出相關訊息，可以看出訊息指出回應的 Content-Length 不相符，實際寫入長度為 0
 ![](02.png)
 
 ## 程式示意
+
+- 註：`ControllerBase` 中的 `File` 會建構 `FileStreamResult`
 ```csharp
 public IActionResult Download()
 {
