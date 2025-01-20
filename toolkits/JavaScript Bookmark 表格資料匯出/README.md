@@ -1,4 +1,4 @@
-# JavaScript  Bookmark 表格資料匯出
+# JavaScript Bookmark 表格資料匯出
 
 - 用途：透過頁籤執行 javascript，用於擷取網頁資料並匯出為 CSV
 

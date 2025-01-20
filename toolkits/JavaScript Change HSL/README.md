@@ -1,4 +1,4 @@
-# Change HSL
+# JavaScript Change HSL
 
 - 用途：簡易將小型 icon 更改配色
 

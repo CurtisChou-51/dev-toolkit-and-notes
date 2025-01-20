@@ -1,4 +1,4 @@
-# IEnumerable 遍歷效能問題 Troubleshooting
+# C# IEnumerable 遍歷效能問題 Troubleshooting
 
 - 問題背景：.NET MVC 系統某個 Razor 頁面產生速度慢，但其對應的資料查詢速度正常
 
