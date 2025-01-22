@@ -1,0 +1,26 @@
+﻿@model [[ProjName]].Models.[[FuncName]].[[FuncName]]ViewModel
+
+@Html.HiddenFor(m => m.ConditionModel.SortModel.SortProp)
+@Html.HiddenFor(m => m.ConditionModel.SortModel.SortOrder)
+<div class="table-container">
+    <div class="scroll-table">
+        <table class="table-primary table-bordered table-wraped">
+            <thead>
+                <tr>
+                    <th>
+                        DisplayName
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ResultModel)
+                {
+                    <tr>
+                        <td>@item.DisplayName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @Html.EditorFor(m => m.ConditionModel.PageModel)
+</div>

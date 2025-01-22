@@ -1,0 +1,23 @@
+﻿@model [[ProjName]].Models.[[FuncName]].[[FuncName]]ViewModel
+
+<div class="[[FuncName]]Main">
+    <div class="form-block block block-bg">
+        <form asp-controller="[[FuncName]]" asp-action="Search" class="resultForm" data-ajax="true" data-ajax-update="#[[FuncName]]_result" data-ajax-begin="LoadingStart" data-ajax-complete="LoadingEnd">
+            <div class="title-row">
+                <div class="label">
+                    <label asp-for="ConditionModel.DisplayName" class="control-label">DisplayName</label>
+                </div>
+                <div class="body">
+                    <input asp-for="ConditionModel.DisplayName" type="text" class="form-control">
+                </div>
+                <div class="function">
+                    <button type="submit" name="submitBtn" value="Search" class="btn btn-primary">查詢</button>
+                </div>
+            </div>
+            <div id="[[FuncName]]_result">
+                <partial name="_Search" model="@Model"></partial>
+            </div>
+        </form>
+    </div>
+</div>
+
