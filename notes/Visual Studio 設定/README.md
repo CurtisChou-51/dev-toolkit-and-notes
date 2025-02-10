@@ -35,3 +35,16 @@ charset = utf-8-bom
 ```
 
 - 參考 [Roslyn](https://raw.githubusercontent.com/dotnet/roslyn/refs/heads/main/.editorconfig)
+
+## Code Snippet
+
+- 工具 > 程式碼片段管理員 > 語言
+
+![](Code Snippet/01.png)
+
+![](Code Snippet/02.png)
+
+- Example：
+  - C# `prop`：建立自動實作屬性
+  - C# `tryf`：建立 try finally 片段
+  - JavaScript `iife`：建立立即執行函數
