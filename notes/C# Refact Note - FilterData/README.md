@@ -9,7 +9,7 @@
 - 資料流調整：拆分為小方法並使用 Pipeline 式處理，減少中間集合的產生
 
 - 去重複方法調整：
-  - 對於輸入資料，使用 Linq `GroupBy` 與 `First` 更具表達性
+  - 對於輸入資料，使用 LINQ `GroupBy` 與 `First` 更具表達性
   - 對於已存在資料，利用匿名型別自動生成 `GetHashCode` 與 `Equals` 的特性簡化去重複判斷，並修正字串拼接可能判斷錯誤的潛在問題，同時使用 `HashSet` 增進檢查效能
 
 ## Before
