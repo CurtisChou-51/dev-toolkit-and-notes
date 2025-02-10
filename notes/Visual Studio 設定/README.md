@@ -40,9 +40,9 @@ charset = utf-8-bom
 
 - 工具 > 程式碼片段管理員 > 語言
 
-![](Code Snippet/01.png)
+![](Code%20Snippet/01.png)
 
-![](Code Snippet/02.png)
+![](Code%20Snippet/02.png)
 
 - Example：
   - C# `prop`：建立自動實作屬性
