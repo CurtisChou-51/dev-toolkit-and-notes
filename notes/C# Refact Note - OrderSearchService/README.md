@@ -24,9 +24,9 @@ public class OrderSearchService
         _dbAccess = dbAccess;
     }
 
-    public PagedPagedOrder GetPagedOrders(UserRole role, string type)
+    public PagedOrderModel GetPagedOrders(UserRole role, string type)
     {
-        PagedPagedOrder result = new();
+        PagedOrderModel result = new();
         if (role == UserRole.Normal)
         {
             if (type == "Replied")
@@ -100,7 +100,7 @@ public class OrderSearchService
         _strategies = strategies;
     }
 
-    public PagedPagedOrder GetPagedOrders(UserRole role, string type)
+    public PagedOrderModel GetPagedOrders(UserRole role, string type)
     {
         IOrderSearchStrategy? strategy = _strategies.FirstOrDefault(x => x.UserRole == role);
         return strategy?.GetPagedOrders(type) ?? new();
@@ -116,7 +116,7 @@ public class OrderSearchService
 public interface IOrderSearchStrategy
 {
     public UserRole UserRole { get; }
-    public PagedPagedOrder GetPagedOrders(string type);
+    public PagedOrderModel GetPagedOrders(string type);
     public int GetOrderCount(string type);
 }
 
@@ -131,14 +131,14 @@ public class NormalOrderSearchStrategy : IOrderSearchStrategy
 
     public UserRole UserRole => UserRole.Normal;
 
-    public PagedPagedOrder GetPagedOrders(string type)
+    public PagedOrderModel GetPagedOrders(string type)
     {
         return type switch
         {
             "Replied" => _dbAccess.GetPagedOrders(UserRole, OrderStatus.Replied),
             "Processing" => _dbAccess.GetPagedOrders(UserRole, OrderStatus.WaitingForReply),
             "Rejected" => _dbAccess.GetPagedOrders(UserRole, OrderStatus.Rejected),
-            _ => new PagedPagedOrder()
+            _ => new PagedOrderModel()
         };
     }
 
@@ -165,13 +165,13 @@ public class ManagerOrderSearchStrategy : IOrderSearchStrategy
 
     public UserRole UserRole => UserRole.Manager;
 
-    public PagedPagedOrder GetPagedOrders(string type)
+    public PagedOrderModel GetPagedOrders(string type)
     {
         return type switch
         {
             "Unreviewed" => _dbAccess.GetPagedReviewOrders(UserRole, OrderStatus.UnderReview, [ProcessDtlStatus.UnderReview1]),
             "Reviewed" => _dbAccess.GetPagedReviewOrders(UserRole, OrderStatus.UnderReview, [ProcessDtlStatus.UnderReview2, ProcessDtlStatus.UnderReview3]),
-            _ => new PagedPagedOrder()
+            _ => new PagedOrderModel()
         };
     }
 
@@ -197,14 +197,14 @@ public class AuditorOrderSearchStrategy : IOrderSearchStrategy
 
     public UserRole UserRole => UserRole.Auditor;
 
-    public PagedPagedOrder GetPagedOrders(string type)
+    public PagedOrderModel GetPagedOrders(string type)
     {
         return type switch
         {
             "Unreviewed" => _dbAccess.GetPagedReviewOrders(UserRole, OrderStatus.UnderReview, [ProcessDtlStatus.UnderReview1]),
             "ToBeReceived" => _dbAccess.GetPagedReviewOrders(UserRole, OrderStatus.Replied, [ProcessDtlStatus.ManualReplied, ProcessDtlStatus.SystemReplied]),
             "Received" => _dbAccess.GetPagedReviewOrders(UserRole, OrderStatus.Received, [ProcessDtlStatus.ManualReplied, ProcessDtlStatus.SystemReplied]),
-            _ => new PagedPagedOrder()
+            _ => new PagedOrderModel()
         };
     }
 
