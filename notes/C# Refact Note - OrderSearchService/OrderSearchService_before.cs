@@ -7,9 +7,9 @@ public class OrderSearchService
         _dbAccess = dbAccess;
     }
 
-    public PagedPagedOrder GetPagedOrders(UserRole role, string type)
+    public PagedOrderModel GetPagedOrders(UserRole role, string type)
     {
-        PagedPagedOrder result = new();
+        PagedOrderModel result = new();
         if (role == UserRole.Normal)
         {
             if (type == "Replied")
