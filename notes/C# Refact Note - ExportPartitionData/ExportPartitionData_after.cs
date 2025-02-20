@@ -12,7 +12,7 @@ public class SomeService
 
         var zipRequestDtos = ExtractDataForExport(data)
             .OrderBy(x => x.typeId)
-            .Partition(targetCount)
+            .Partition(targetCount)  /* .NET 6 以上可使用 .Chunk */
             .Select(DataForExportToContents)
             .Select((contents, partIdx) => new ZipRequestDto
             {
