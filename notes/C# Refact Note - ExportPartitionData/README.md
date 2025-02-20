@@ -11,6 +11,7 @@
 
 - 資料流調整：
   - 將依照筆數拆分檔案的邏輯移出為獨立的擴充方法 `Partition`
+  - 如果是 `.NET 6` 以上可以直接使用 LINQ 的 [`Chunk`](https://learn.microsoft.com/zh-tw/dotnet/api/system.linq.enumerable.chunk?view=net-6.0) 方法，不用自行定義 `Partition` 方法
   - 使用 Pipeline 式處理：資料擷取 → 排序 → 分批 → 產生內容 → 產生檔案
 
 ## Before
@@ -174,7 +175,7 @@ public class SomeService
 
         var zipRequestDtos = ExtractDataForExport(data)
             .OrderBy(x => x.typeId)
-            .Partition(targetCount)
+            .Partition(targetCount)  /* .NET 6 以上可使用 .Chunk */
             .Select(DataForExportToContents)
             .Select((contents, partIdx) => new ZipRequestDto
             {
