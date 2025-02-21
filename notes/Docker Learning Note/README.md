@@ -19,11 +19,16 @@
 
 - 在 [Docker Github](https://github.com/docker/welcome-to-docker) 下載範例 repository `welcome-to-docker`
 
-- 啟動 Docker Desktop，到 `welcome-to-docker` 存放目錄下輸入指令：
+- 啟動 Docker Desktop，因為是首次使用目前沒有任何的 image
+![](04.png)
+
+- 到 `welcome-to-docker` 存放目錄下輸入指令：
 ```
 docker build -t welcome-to-docker-image .
 docker run -d -p 8088:3000 --name welcome-to-docker-container welcome-to-docker-image
 ```
+
+![](05.png)
 
 - `docker build -t welcome-to-docker-image .` 指令說明：
   - `docker build`：告訴 Docker 要開始建立一個新的 image
@@ -36,3 +41,9 @@ docker run -d -p 8088:3000 --name welcome-to-docker-container welcome-to-docker-
   - `-p 8088:3000`：port 對應，在瀏覽器中訪問 `http://localhost:8088`，實際上是透過 8088 port 訪問容器內的 3000 port
   - `--name welcome-to-docker-container`：指定容器名稱
   - `welcome-to-docker-image`：指定用此 image 來建立容器
+  
+- image 建立後可以在 Docker Desktop 看到建立的 image
+![](06.png)
+
+- 容器啟動後可以使用瀏覽器開啟 `http://localhost:8088` 看到頁面
+![](07.png)
