@@ -47,3 +47,12 @@ docker run -d -p 8088:3000 --name welcome-to-docker-container welcome-to-docker-
 
 - 容器啟動後可以使用瀏覽器開啟 `http://localhost:8088` 看到頁面
 ![](07.png)
+
+## Visual Studio Docker 支援
+
+- 對專案點選右鍵，加入 > Docker 支援
+![](08.png)
+![](09.png)
+
+- 確認後可產生 Dockerfile 檔案
+![](10.png)
