@@ -31,9 +31,10 @@ docker run -d -p 8088:3000 --name welcome-to-docker-container welcome-to-docker-
 ![](05.png)
 
 - `docker build -t welcome-to-docker-image .` 指令說明：
-  - `docker build`：告訴 Docker 要開始建立一個新的 image
+  - `docker build`：告訴 Docker 讀取 Dockerfile 建立一個新的 image
   - `-t`：使用 `-t` 參數來指定 image 名稱為 welcome-to-docker-image
-  - `.`：表示 Docker 在當前目錄下尋找 Dockerfile 檔案，然後根據 Dockerfile 的指示來建立
+  - `-f`：使用 `-f` 指定讀取的 Dockerfile 檔，此處沒有指定故預設讀取 Dockerfile
+  - `.`：表示**context(建置上下文)**，建置過程可以引用 context 中的任何檔案，所使用到的 `COPY` 指令也是基於此 context
 
 - `docker run -d -p 8088:3000 --name welcome-to-docker-container welcome-to-docker-image` 指令說明：
   - `docker run`：告訴 Docker 建立並啟動一個新的容器
