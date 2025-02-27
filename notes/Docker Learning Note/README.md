@@ -34,7 +34,7 @@ docker run -d -p 8088:3000 --name welcome-to-docker-container welcome-to-docker-
   - `docker build`：告訴 Docker 讀取 Dockerfile 建立一個新的 image
   - `-t`：使用 `-t` 參數來指定 image 名稱為 welcome-to-docker-image
   - `-f`：使用 `-f` 指定讀取的 Dockerfile 檔，此處沒有指定故預設讀取 Dockerfile
-  - `.`：表示**context(建置上下文)**，建置過程可以引用 context 中的任何檔案，所使用到的 `COPY` 指令也是基於此 context
+  - `.`：此參數指定 PATH 或 URL 中的檔案，表示**context(建置上下文)**，建置過程可以引用 context 中的任何檔案，所使用到的 `COPY` 指令也是基於此 context，此處設定為當前目錄
 
 - `docker run -d -p 8088:3000 --name welcome-to-docker-container welcome-to-docker-image` 指令說明：
   - `docker run`：告訴 Docker 建立並啟動一個新的容器
@@ -51,9 +51,21 @@ docker run -d -p 8088:3000 --name welcome-to-docker-container welcome-to-docker-
 
 ## Visual Studio Docker 支援
 
-- 對專案點選右鍵，加入 > Docker 支援
+- 建立一個 Web 專案 WebApplicationDockerLearning，在 Visual Studio 對專案點選右鍵，加入 > Docker 支援
 ![](08.png)
 ![](09.png)
 
 - 確認後可產生 Dockerfile 檔案
 ![](10.png)
+
+- 開啟終端機，或使用 Visual Studio 的 工具 > 命令列 > 開發人員命令提示字元
+- 注意 COPY 指令與 context 的相對路徑正確，如 Visual Studio 產生的 Dockerfile 為：
+```
+COPY ["WebApplicationDockerLearning/WebApplicationDockerLearning.csproj", "WebApplicationDockerLearning/"]
+```
+
+- 如果 Dockerfile 檔案位置不在當前資料夾，可透過 `-f` 參數指定檔案路徑
+```
+docker build -f WebApplicationDockerLearning/Dockerfile -t ex1-image .
+```
+![](11.png)
