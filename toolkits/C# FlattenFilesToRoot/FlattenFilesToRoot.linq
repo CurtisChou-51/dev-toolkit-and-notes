@@ -8,6 +8,6 @@ void Main()
     {
         string newFilePath = Path.Combine(baseFolder, Path.GetRelativePath(baseFolder, filePath).Replace(@"\", "_"));
         File.Move(filePath, newFilePath);
-		$"{filePath} -> {newFilePath}".Dump();
+        $"{filePath} -> {newFilePath}".Dump();
     }
 }
