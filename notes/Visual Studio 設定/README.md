@@ -1,4 +1,4 @@
-# Visual Studio 設定
+﻿# Visual Studio 設定
 
 - 紀錄一些 Visual Studio 設定
 
@@ -56,3 +56,19 @@ charset = utf-8-bom
   - C# `prop`：建立自動實作屬性
   - C# `tryf`：建立 try finally 片段
   - JavaScript `iife`：建立立即執行函數
+  
+## GitHub Copilot generate commit message
+- 工具 > 選項 > GitHub > Copilot
+- 輸入自訂指示模板用於生成 commit message 如：
+
+```
+The format is:
+"<type>(<scope>): <subject>
+<BLANK LINE>
+<body>
+"
+type:feat, fix, docs, style, refactor, test, chore, build, ci, perf
+body: Use markdown to describe the changes in bullet points, each starting with "- ".
+```
+
+![](GitHub%20Copilot%20commit%20message/01.png)
