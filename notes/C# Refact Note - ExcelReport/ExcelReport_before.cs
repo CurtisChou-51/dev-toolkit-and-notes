@@ -1,4 +1,4 @@
-var results = GetQueryResult(conditionModel);
+﻿var results = GetQueryResult(conditionModel);
 var codeNames = GetQueryCodeNames(conditionModel);
 
 foreach (var codeName in codeNames)
