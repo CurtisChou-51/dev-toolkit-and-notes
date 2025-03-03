@@ -7,20 +7,20 @@
   - Hyper-V 虛擬化，在早期 Docker for Windows 版本中使用
 
 - 安裝 Docker 時會出現選取選項 (目前已預設勾選 WSL2)：
-![](01.png)
+![](安裝/01.png)
 
 - 這兩個方式都需要在 BIOS 中開啟 CPU 虛擬化功能 (Intel VT)，否則啟動時會出現錯誤：
-![](02.png)
+![](安裝/02.png)
 
 - WSL2 需要開啟 **Windows 功能** 中的 **Virtual Machine Platform** 與 **Windows Subsystem for Linux**：
-![](03.png)
+![](安裝/03.png)
 
 ## welcome-to-docker 範例
 
 - 在 [Docker Github](https://github.com/docker/welcome-to-docker) 下載範例 repository `welcome-to-docker`
 
 - 啟動 Docker Desktop，因為是首次使用目前沒有任何的 image
-![](04.png)
+![](first_example/01.png)
 
 - 到 `welcome-to-docker` 存放目錄下輸入指令：
 ```
@@ -28,7 +28,7 @@ docker build -t welcome-to-docker-image .
 docker run -d -p 8088:3000 --name welcome-to-docker-container welcome-to-docker-image
 ```
 
-![](05.png)
+![](first_example/02.png)
 
 - `docker build -t welcome-to-docker-image .` 指令說明：
   - `docker build`：告訴 Docker 讀取 Dockerfile 建立一個新的 image
@@ -44,20 +44,20 @@ docker run -d -p 8088:3000 --name welcome-to-docker-container welcome-to-docker-
   - `welcome-to-docker-image`：指定用此 image 來建立容器
   
 - image 建立後可以在 Docker Desktop 看到建立的 image
-![](06.png)
+![](first_example/03.png)
 
 - 容器啟動後可以使用瀏覽器開啟 `http://localhost:8088` 看到頁面
-![](07.png)
+![](first_example/04.png)
 
 ## Visual Studio Docker 支援
 
 - Visual Studio 的 Docker 支援提供 Container Debugging，讓開發者可以在容器環境中開發與偵錯，確保開發環境與生產環境一致
 - 建立一個 Web 專案 WebApplicationDockerLearning，在 Visual Studio 對專案點選右鍵，加入 > Docker 支援
-![](08.png)
-![](09.png)
+![](VS支援/01.png)
+![](VS支援/02.png)
 
 - 確認後可產生 Dockerfile 檔案
-![](10.png)
+![](VS支援/03.png)
 
 ### 修改檔案或配置
 
@@ -81,4 +81,4 @@ COPY ["WebApplicationDockerLearning/WebApplicationDockerLearning.csproj", "WebAp
 ```
 docker build -f WebApplicationDockerLearning/Dockerfile -t ex1-image .
 ```
-![](11.png)
+![](VS支援/04.png)
