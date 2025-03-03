@@ -1,4 +1,4 @@
-public bool CopyVoiceFile(string virtualFullPath, string destFullPath)
+﻿public bool CopyVoiceFile(string virtualFullPath, string destFullPath)
 {
     string fileNameL = Path.GetFileNameWithoutExtension(virtualFullPath);
     string voiceTmpFolder = $"{_tmpSaveFolder}\\XXX\\{fileNameL}";

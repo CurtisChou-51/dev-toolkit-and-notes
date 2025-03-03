@@ -1,4 +1,4 @@
-public class OrderSearchService
+﻿public class OrderSearchService
 {
     private readonly IEnumerable<IOrderSearchStrategy> _strategies;
 

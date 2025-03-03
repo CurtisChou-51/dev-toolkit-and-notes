@@ -1,4 +1,4 @@
-public class OrderSearchService
+﻿public class OrderSearchService
 {
     private readonly IDbAccess _dbAccess;
 

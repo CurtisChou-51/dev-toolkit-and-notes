@@ -1,4 +1,4 @@
-public class SomeService
+﻿public class SomeService
 {
     // other ...
 

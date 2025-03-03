@@ -1,4 +1,4 @@
-public class SuspiciousTradeService
+﻿public class SuspiciousTradeService
 {
     public CaseSuspiciousTradeModel? GetViewModel(string CaseId, int CodeId)
     {

@@ -1,4 +1,4 @@
-private List<EventCsvDto> FilterData(List<BankRawDataDto> rawDatas, string fileName, DateTime filterDate)
+﻿private List<EventCsvDto> FilterData(List<BankRawDataDto> rawDatas, string fileName, DateTime filterDate)
 {
     var existData = GetBankData(filterDate)
         .Select(x => new { x.CaseNumber, x.BankCode, x.BankAccount, x.BankIdno })
