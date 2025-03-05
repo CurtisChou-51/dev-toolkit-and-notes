@@ -82,3 +82,13 @@ COPY ["WebApplicationDockerLearning/WebApplicationDockerLearning.csproj", "WebAp
 docker build -f WebApplicationDockerLearning/Dockerfile -t ex1-image .
 ```
 ![](VS支援/04.png)
+
+## 資料的保存
+
+### container 可替換的設計理念
+
+- 在一個運行中的 container 內部修改檔案時，這些變更會被保存在 container 的可寫層(writable layer)中。但是實際上我們常常將 container 視為無狀態(stateless)的執行環境，而不是一個持久化儲存的方案，基於以下觀點：
+  - container 的設計理念為可替換的，隨時可以銷毀並重新創建，而不是進行修改
+  - 當需要更新應用程式時，不是修改現有 container，而是構建新 container 並替換
+  - 水平擴展需求，在負載增加時可以快速創建多個相同的 container，管理工具(如Kubernetes)也會自動管理 container 的生命週期
+  - 效能考量，container 的可寫層不適合高頻率的寫入操作
