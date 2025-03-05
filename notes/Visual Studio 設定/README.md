@@ -72,3 +72,12 @@ body: Use markdown to describe the changes in bullet points, each starting with 
 ```
 
 ![](GitHub%20Copilot%20commit%20message/01.png)
+
+## Collapse appsettings.json
+- 在 Console 或 WinForm 專案收合 appsettings.json
+
+![](Collapse%20appsettings/01.png)  
+
+![](Collapse%20appsettings/02.png)  
+
+![](Collapse%20appsettings/03.png)  
