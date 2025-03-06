@@ -76,8 +76,11 @@ body: Use markdown to describe the changes in bullet points, each starting with 
 ## Collapse appsettings.json
 - 在 Console 或 WinForm 專案收合 appsettings.json
 
+**before：**
 ![](Collapse%20appsettings/01.png)  
 
+**setting：**
 ![](Collapse%20appsettings/02.png)  
 
+**after：**
 ![](Collapse%20appsettings/03.png)  
