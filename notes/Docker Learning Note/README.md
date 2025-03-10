@@ -1,4 +1,4 @@
-# Docker Learning Note
+﻿# Docker Learning Note
 
 ## Docker Desktop on Windows
 
@@ -92,3 +92,27 @@ docker build -f WebApplicationDockerLearning/Dockerfile -t ex1-image .
   - 當需要更新應用程式時，不是修改現有 container，而是構建新 container 並替換
   - 水平擴展需求，在負載增加時可以快速創建多個相同的 container，管理工具(如Kubernetes)也會自動管理 container 的生命週期
   - 效能考量，container 的可寫層不適合高頻率的寫入操作
+
+### SQL Server example
+
+- 參考 [Microsoft 文件](https://learn.microsoft.com/zh-tw/sql/linux/quickstart-install-connect-docker?view=sql-server-ver16&pivots=cs1-bash&tabs=cli)
+- 輸入 docker pull 指令從 Microsoft Container Registry 提取 SQL Server 2022 image
+```
+docker pull mcr.microsoft.com/mssql/server:2022-latest
+``` 
+![](SQL%20Server%20example/01.png)
+
+- 輸入 docker run 指令，以 SQL Server 2022 image 建立容器並啟動，這裡會將 sa 的密碼設置為 `YourStrong!Passw0rd`
+```
+docker run -e 'ACCEPT_EULA=Y' `
+  -e 'MSSQL_SA_PASSWORD=YourStrong!Passw0rd' `
+  -p 1433:1433 `
+  --name mssql-container `
+  -d mcr.microsoft.com/mssql/server:2022-latest
+```
+![](SQL%20Server%20example/02.png)
+
+- 使用 SSMS 進行連線，由於 port 對應為 1433，Server 輸入 `localhost,1433`，成功連線後輸入 [語法](SQL%20Server%20example/testDB.sql) 建立測試用資料庫與資料表
+![](SQL%20Server%20example/03.png)
+
+- 這個 docker run 指令指令沒有使用 volume，此時資料保存在 container 的可寫層中，雖然 container 重啟後資料會保留，但如果 container 被銷毀資料也會消失
