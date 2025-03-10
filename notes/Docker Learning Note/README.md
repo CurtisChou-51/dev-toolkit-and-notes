@@ -42,7 +42,9 @@ docker run -d -p 8088:3000 --name welcome-to-docker-container welcome-to-docker-
   - `-p 8088:3000`：port 對應，在瀏覽器中訪問 `http://localhost:8088`，實際上是透過 8088 port 訪問容器內的 3000 port
   - `--name welcome-to-docker-container`：指定容器名稱
   - `welcome-to-docker-image`：指定用此 image 來建立容器
-  
+
+- **注意：環境變數、port這些屬於 docker run 選項的位置都必須放在 image name 之前，放到後面會被視為傳遞給容器的命令**
+
 - image 建立後可以在 Docker Desktop 看到建立的 image
 ![](first_example/03.png)
 
