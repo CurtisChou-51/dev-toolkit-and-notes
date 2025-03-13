@@ -1,0 +1,8 @@
+﻿POST https://api.github.com/graphql
+Authorization: bearer MyToken
+Content-Type: application/json
+User-Agent: MyAgent
+
+{
+  "query": "query { user(login: \"CurtisChou-51\") { createdAt contributionsCollection { contributionYears contributionCalendar { weeks { contributionDays { contributionCount date } } } } } }"
+}
