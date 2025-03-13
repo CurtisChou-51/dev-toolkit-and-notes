@@ -118,3 +118,18 @@ docker run -e 'ACCEPT_EULA=Y' `
 ![](SQL%20Server%20example/03.png)
 
 - 這個 docker run 指令指令沒有使用 volume，此時資料保存在 container 的可寫層中，雖然 container 重啟後資料會保留，但如果 container 被銷毀資料也會消失
+
+- 以下的指令加入 `-v sqlvolume:/var/opt/mssql` ，使用 volume 可以確保資料儲存在宿主機上，不會因 container 被銷毀而消失
+  - volume 名稱為 sqlvolume，要掛載到 container `/var/opt/mssql` 目錄
+  - 如果此名稱的 volume 不存在，Docker 會自動建立一個新的
+  - 如果此名稱的 volume 已存在，Docker 會直接使用
+
+```
+docker run -e 'ACCEPT_EULA=Y' `
+  --network my-network `
+  -e 'MSSQL_SA_PASSWORD=YourStrong!Passw0rd' `
+  -p 1433:1433 `
+  -v sqlvolume:/var/opt/mssql `
+  --name mssql-container `
+  -d mcr.microsoft.com/mssql/server:2022-latest
+```
