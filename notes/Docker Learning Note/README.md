@@ -43,7 +43,9 @@ docker run -d -p 8088:3000 --name welcome-to-docker-container welcome-to-docker-
   - `--name welcome-to-docker-container`：指定容器名稱
   - `welcome-to-docker-image`：指定用此 image 來建立容器
 
-- **注意：環境變數、port這些屬於 docker run 選項的位置都必須放在 image name 之前，放到後面會被視為傳遞給容器的命令**
+> [!TIP]
+> 注意：環境變數、port這些屬於 docker run 選項的位置都必須放在 image name 之前，放到後面會被視為傳遞給容器的命令  
+> 將指令寫為固定的格式可能會是個好主意，如：`docker run {docker options} -d {image-name}`
 
 - image 建立後可以在 Docker Desktop 看到建立的 image
 ![](first_example/03.png)
@@ -74,31 +76,29 @@ docker run -d -p 8088:3000 --name welcome-to-docker-container welcome-to-docker-
 
 - Visual Studio 產生的 Dockerfile 也可用於自己建立 image
 - 開啟終端機，或使用 Visual Studio 的 工具 > 命令列 > 開發人員命令提示字元
-- 注意 COPY 指令與 context 的相對路徑正確，如 Visual Studio 產生的 Dockerfile 為：
-```
-COPY ["WebApplicationDockerLearning/WebApplicationDockerLearning.csproj", "WebApplicationDockerLearning/"]
-```
-
 - 如果 Dockerfile 檔案位置不在當前資料夾，可透過 `-f` 參數指定檔案路徑
 ```
 docker build -f WebApplicationDockerLearning/Dockerfile -t ex1-image .
 ```
 ![](VS支援/04.png)
 
+> [!NOTE]
+> 注意 Dockerfile 內 COPY 指令的路徑為 **context(建置上下文)**，而 context 是由 build 指令傳入的參數而定  
+> **並不是當前目錄或是相對於 Dockerfile 的路徑**
+
 ## 資料的保存
 
 ### container 可替換的設計理念
-
-- 在一個運行中的 container 內部修改檔案時，這些變更會被保存在 container 的可寫層(writable layer)中。但是實際上我們常常將 container 視為無狀態(stateless)的執行環境，而不是一個持久化儲存的方案，基於以下觀點：
-  - container 的設計理念為可替換的，隨時可以銷毀並重新創建，而不是進行修改
-  - 當需要更新應用程式時，不是修改現有 container，而是構建新 container 並替換
-  - 水平擴展需求，在負載增加時可以快速創建多個相同的 container，管理工具(如Kubernetes)也會自動管理 container 的生命週期
-  - 效能考量，container 的可寫層不適合高頻率的寫入操作
+- 在一個運行中的 container 內部修改檔案時，這些變更會被保存在 container 的可寫層(writable layer)中
+> [!TIP]
+> 但是實際上我們常常將 container 視為無狀態(stateless)的執行環境，而不是一個持久化儲存的方案，基於以下觀點：
+>   - container 的設計理念為可替換的，隨時可以銷毀並重新創建，而不是進行修改
+>   - 當需要更新應用程式時，不是修改現有 container，而是構建新 container 並替換
+>   - 水平擴展需求，在負載增加時可以快速創建多個相同的 container，管理工具(如Kubernetes)也會自動管理 container 的生命週期
+>   - 效能考量，container 的可寫層不適合高頻率的寫入操作
 
 ### SQL Server example
-
-- 參考 [Microsoft 文件](https://learn.microsoft.com/zh-tw/sql/linux/quickstart-install-connect-docker?view=sql-server-ver16&pivots=cs1-bash&tabs=cli)
-- 輸入 docker pull 指令從 Microsoft Container Registry 提取 SQL Server 2022 image
+- 輸入 docker pull 指令從 Microsoft Container Registry 提取 SQL Server 2022 image，參考 [Microsoft 文件](https://learn.microsoft.com/zh-tw/sql/linux/quickstart-install-connect-docker?view=sql-server-ver16&pivots=cs1-bash&tabs=cli)
 ```
 docker pull mcr.microsoft.com/mssql/server:2022-latest
 ``` 
