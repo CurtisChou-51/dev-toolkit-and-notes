@@ -9,6 +9,10 @@
   - 維持原本查無資料時也會為該 `codeName` 建立工作表的設計
   - 避免在迴圈中重複執行 `Where` 查詢提升效能，大量資料時效果更明顯
 
+> [!TIP]
+> GroupJoin 會在內部使用 Lookup 結構加速檢索  
+> 此案例中 GroupJoin 為 O(M + N)，而 foreach + where 則為 O(M * N)
+
 ## Before
 
 ```csharp
