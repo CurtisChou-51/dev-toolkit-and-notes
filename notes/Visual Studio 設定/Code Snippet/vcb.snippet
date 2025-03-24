@@ -16,7 +16,7 @@
         </Literal>
       </Declarations>
       <Code Language="HTML">
-        <![CDATA[<input :data-value="cardData[0].$name$.PreviousData" :disabled="!unlockAllColumn &amp;&amp; !cardData[0].$name$.IsManual &amp;&amp; cardData[0].$name$.DataErrorListColumnId==-1" :haserror="cardData[0].$name$.DataErrorListColumnId" class="textNumber" id="0_$name$" name="0_$name$" type="checkbox" v-model="cardData[0].$name$.FormValue" :true-value="1" :false-value="0" />]]>
+        <![CDATA[<input :data-value="cardData[0].$name$.PreviousData" :disabled="!unlockAllColumn &amp;&amp; !cardData[0].$name$.IsManual &amp;&amp; cardData[0].$name$.DataErrorListColumnId==-1" :haserror="cardData[0].$name$.DataErrorListColumnId" class="textNumber" :name="cIndex ?? 0 + '_$name$'" type="checkbox" v-model="cardData[0].$name$.FormValue" :true-value="1" :false-value="0" />]]>
       </Code>
     </Snippet>
   </CodeSnippet>
