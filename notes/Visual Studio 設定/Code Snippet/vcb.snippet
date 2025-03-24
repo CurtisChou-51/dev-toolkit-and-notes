@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Checkbox</Title>
+      <Author>Curtis</Author>
+      <Description>Creates Vue Checkbox HTML.</Description>
+      <Shortcut>vcb</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>name</ID>
+          <ToolTip>Enter the name</ToolTip>
+          <Default>C020001</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="HTML">
+        <![CDATA[<input :data-value="cardData[0].$name$.PreviousData" :disabled="!unlockAllColumn &amp;&amp; !cardData[0].$name$.IsManual &amp;&amp; cardData[0].$name$.DataErrorListColumnId==-1" :haserror="cardData[0].$name$.DataErrorListColumnId" class="textNumber" id="0_$name$" name="0_$name$" type="checkbox" v-model="cardData[0].$name$.FormValue" :true-value="1" :false-value="0" />]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
