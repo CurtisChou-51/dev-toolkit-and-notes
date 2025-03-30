@@ -13,7 +13,7 @@ Dear customer [C0001], your order [O1234] has been shipped, and the estimated de
 ```
 
 - Dictionary：
-```
+```csharp
 var dictionary = new Dictionary<string, string>
 {
     { "[C0001]", "Curtis" },
