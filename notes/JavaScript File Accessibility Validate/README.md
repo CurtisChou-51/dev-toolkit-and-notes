@@ -34,3 +34,19 @@
    - 使用 FileReader 嘗試讀取檔案的第一個 byte
    - 如果讀取成功，表示檔案可以存取
    - 如果讀取失敗，表示檔案可能已被移動或刪除
+
+## 檢測漏洞
+
+- 推測可能原因是 `File` 型別的資料有緩存機制
+
+如果依照以下流程：
+1. 選擇檔案
+2. 刪除本機原始檔案
+3. `validateFileAccessible` 第一次訪問 file，此時 `file.size` 會取得 0
+4. 由於 `file.size` 為 0，即使 `FileReader` 讀取的檔案不存在也不會觸發 `onerror`
+5. 結果：無法正確檢測出檔案已被刪除
+
+## 補正方案
+
+- 如果不允許上傳空檔案，在 `validateFileAccessible` 檢查 `file.size` 即可
+- 在 `input[type="file"]` 的 `onchange` 事件中立即訪問 `file.size` 屬性，之後刪除本機原始檔案，驗證時 `FileReader` 讀取的檔案不存在就可以觸發 `onerror`
