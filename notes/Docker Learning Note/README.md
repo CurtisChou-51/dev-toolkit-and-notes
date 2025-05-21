@@ -133,3 +133,6 @@ docker run -e 'ACCEPT_EULA=Y' `
   --name mssql-container `
   -d mcr.microsoft.com/mssql/server:2022-latest
 ```
+
+- 這個指令中的 `--network my-network` 的作用是用於 **容器與其他容器之間通訊**，目前在本機使用 SSMS 進行連線與 network 的設置無關
+- 如果在開發階段要連線也只需要將連線字串設為 `Data Source=localhost,1433` 即可，此時依然與 network 的設置無關
