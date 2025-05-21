@@ -84,3 +84,10 @@ body: Use markdown to describe the changes in bullet points, each starting with 
 
 **after：**  
 ![](Collapse%20appsettings/03.png)  
+
+
+## 關閉瀏覽器時不停止偵錯
+
+- 工具 > 選項 > 專案和方案 > Web專案
+
+![](Web專案/01.png)  
