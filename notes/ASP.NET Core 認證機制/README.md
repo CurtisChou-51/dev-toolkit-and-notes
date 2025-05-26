@@ -1,5 +1,11 @@
 # ASP.NET Core 認證機制
 
+## UseAuthentication vs UseAuthorization
+
+| 元件                        | 說明                                                         |
+| ------------------------- | ---------------------------------------------------------- |
+| `app.UseAuthentication()` | 驗證使用者身份，解析請求中的身份驗證資訊（如 Cookie 或 JWT），並建立 `HttpContext.User`。 |
+| `app.UseAuthorization()`  | 檢查授權條件，根據 `[Authorize]` 的設定（如角色、政策），檢查 `HttpContext.User` 是否有權限。  |
 
 ## 相關方法與 scheme 名稱
 
