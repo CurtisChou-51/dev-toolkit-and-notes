@@ -49,5 +49,5 @@
 ## 注意事項
 
 - `<dialog>` 不支援所有舊版瀏覽器（如 IE）
-- 使用 `.showModal()` 時，`<dialog>` 會進入 **top layer**，這是瀏覽器的特殊層級，**普通的 z-index 無法覆蓋**，如果有配合其他 UI 套版使用需考慮相容性
+- 使用 `.showModal()` 時，`<dialog>` 會進入 **top layer**，這是瀏覽器的特殊層級，**普通的 z-index 無法覆蓋**：[Dialog-test.html](Dialog-test.html)，如果有配合其他 UI 套版使用需考慮相容性
 - 在我們遇到的一個情境中使用了 `.showModal()` 來顯示，因此需要覆蓋此 dialog 的 UI 也需要調整實作方法 

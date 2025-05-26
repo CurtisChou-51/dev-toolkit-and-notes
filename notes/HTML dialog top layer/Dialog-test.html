@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dialog test</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        dialog {
+            width: 300px;
+            padding: 20px;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        #loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="openDialogModal()">openDialog - Modal</button>
+    <button onclick="openDialog()">openDialog</button>
+
+    <dialog id="myDialog">
+        <p>Dialog content</p>
+        <button onclick="closeDialog()">closeDialog</button>
+        <button onclick="toggleLoading()">toggleLoading</button>
+    </dialog>
+
+    <div id="loading" style="display: none;">Loading...</div>
+
+    <script>
+        function openDialogModal() {
+            document.getElementById('myDialog').showModal();
+        }
+
+        function openDialog() {
+            document.getElementById('myDialog').show();
+        }
+
+        function closeDialog() {
+            document.getElementById('myDialog').close();
+        }
+
+        function toggleLoading() {
+            const loading = document.getElementById('loading');
+            loading.style.display = loading.style.display === 'none' ? 'flex' : 'none';
+        }
+    </script>
+</body>
+</html>
