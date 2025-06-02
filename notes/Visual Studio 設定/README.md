@@ -95,8 +95,13 @@ body: Use markdown to describe the changes in bullet points, each starting with 
 
 ## Git user 設定
 
-- Git > 設定 的 `user.name` 和 `user.email` 會影響 commit 的作者資訊，但是 Visual Studio 的介面只能修改全域設定
-- 這些設定會被儲存到專案的 `.git/config` 檔案中，如果需要修改專案特定的設定，可以直接編輯這個檔案區塊：
+- `Git > 設定` 的 `user.name` 和 `user.email` 會影響 commit 的作者資訊，但是 Visual Studio 的介面只能修改全域設定，全域設定會被儲存到使用者的 `~/.gitconfig` 檔案中，會影響所有專案
+
+![](Git%20user%20設定/01.png)
+
+- 如果需要修改專案特定的設定，可以直接編輯 `.git/config` 這個檔案的 user 區塊如：
+
+![](Git%20user%20設定/02.png)
 
 ```
 [user]
