@@ -91,3 +91,15 @@ body: Use markdown to describe the changes in bullet points, each starting with 
 - 工具 > 選項 > 專案和方案 > Web專案
 
 ![](Web專案/01.png)  
+
+
+## Git user 設定
+
+- Git > 設定 的 `user.name` 和 `user.email` 會影響 commit 的作者資訊，但是 Visual Studio 的介面只能修改全域設定
+- 這些設定會被儲存到專案的 `.git/config` 檔案中，如果需要修改專案特定的設定，可以直接編輯這個檔案區塊：
+
+```
+[user]
+    name = Your Project Specific Name
+    email = your-email@project.com
+```
