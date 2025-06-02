@@ -1,4 +1,4 @@
-# ASP.NET Core 認證機制
+﻿# ASP.NET Core 認證機制
 
 ## UseAuthentication vs UseAuthorization
 
@@ -64,3 +64,11 @@ await HttpContext.SignInAsync("CookieScheme", userPrincipal, new AuthenticationP
 
 await HttpContext.SignOutAsync("CookieScheme");
 ```
+
+- 如果沒有設置 `IsPersistent = true`，這將是一個 **Session Cookie**，會在瀏覽器關閉時自動刪除
+
+![](01.png)
+
+- 設置 `IsPersistent = true` 之後，會在指定的 `ExpiresUtc` 時間到期之前存在，關掉瀏覽器再打開還是登入狀態
+
+![](02.png)
