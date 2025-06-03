@@ -108,3 +108,24 @@ body: Use markdown to describe the changes in bullet points, each starting with 
     name = Your Project Specific Name
     email = your-email@project.com
 ```
+
+## 專案屬性
+
+- nullable 提示未啟用：
+
+![](專案屬性/01.png)
+
+- 啟用 nullable 提示，可透過 `專案 > 右鍵 >  屬性` 調整，會自動更新 `.csproj` 檔案：
+
+![](專案屬性/02.png)
+
+- 或在 `.csproj` 檔案中手動調整：
+```xml
+<PropertyGroup>
+  <Nullable>enable</Nullable>
+</PropertyGroup>
+```
+
+- 啟用後會在程式碼中顯示 nullable 提示：
+
+![](專案屬性/03.png)
