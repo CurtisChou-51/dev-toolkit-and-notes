@@ -1,4 +1,4 @@
-# JavaScript Refact Note - setTabEvent
+﻿# JavaScript Refact Note - setTabEvent
 
 - 對於按鈕與頁籤功能的重構筆記
 
@@ -6,12 +6,12 @@
 
 - 流程控制：
   - 主流程簡潔，只負責事件註冊
-  - 將事件處理邏輯抽離為獨立函數
+  - 將事件處理邏輯 `listener` 抽離為獨立函數
   - 提取函數配合 `early return` 減少嵌套層級
   
 - 效能優化：
-  - 減少不必要的陣列轉換
-  - 從每個按鈕一個事件處理函數實體，改為所有按鈕共用一個處理函數實體
+  - 對於 `NodeList` 可以直接 `for loop` 處理，減少不必要的陣列轉換
+  - 對於 `addEventListener` 的調整，從每個按鈕一個 `listener` 實體改為所有按鈕共用一個 `listener` 實體，可減少記憶體使用
   
 ## Before
 
