@@ -72,3 +72,12 @@ await HttpContext.SignOutAsync("CookieScheme");
 - 設置 `IsPersistent = true` 之後，會在指定的 `ExpiresUtc` 時間到期之前存在，關掉瀏覽器再打開還是登入狀態
 
 ![](02.png)
+
+## Cookie 驗證的加密依賴
+
+- Cookie 驗證會自動使用 ASP.NET Core 的 Data Protection API 來加密和解密 Cookie 中的驗證資訊，預設情況下 Key 存在記憶體中，重啟後會重新生成
+- 這導致 Cookie 雖然是儲存在瀏覽器端，但因為重新生成的 Key 變更，現有的登入 Cookie 都會無法解密而無效，用戶被強制登出
+- 如果需要跨多個應用程式或重啟後仍然有效，可以配置 Data Protection API 使用持久化存儲（如 SQL Server、Redis 等）
+
+- Microsoft 參考：[在 ASP.NET Core 中使用 Cookie 驗證](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/cookie?view=aspnetcore-8.0#cookie-policy-middleware)
+![](03.png)
