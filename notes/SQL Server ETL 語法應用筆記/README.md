@@ -1,4 +1,4 @@
-# SQL Server ETL 語法應用筆記
+﻿# SQL Server ETL 語法應用筆記
 
 ## 概述
 - 背景：紀錄一些 SQL Server 中常見的 ETL（擷取、轉換、載入）語法與使用情境
@@ -38,10 +38,28 @@ select Col_1, Col_2
 drop table if exists #XXXTmpTable;
 ```
 
-### 4. `merge into output`
+### 4. `merge into 批次資料更新`
 
-- 使用 `merge into` 用於批次資料更新
-- `output` 可以捕捉被 `insert` 或 `update` 的資料，而 `into #ChangeResult_XXXTable` 需要預先定義結構
+- 使用 `merge into` 批次資料更新
+
+- 加欄位後補值範例：
+
+```sql
+/* Add CaseSeqId column for future reference, as CaseId will be deprecated. */
+
+alter table XXXTable add CaseSeqId int null;
+
+merge into XXXTable t
+using (
+    select s.XId, c.SeqId
+      from Cases c
+      join XXXTable s on c.CaseId = s.CaseId
+) i on i.XId = t.XId
+when matched then
+    update set t.CaseSeqId = i.SeqId;
+```
+
+- 使用 `output` 可以捕捉被 `insert` 或 `update` 的資料，注意此處 `into #ChangeResult_XXXTable` 需要預先定義結構
 
 ```sql
 merge into XXXTable T
