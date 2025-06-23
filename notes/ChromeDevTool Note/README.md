@@ -1,4 +1,4 @@
-# ChromeDevTool Note
+﻿# ChromeDevTool Note
 
 - ChromeDevTool 使用筆記
 
@@ -32,3 +32,7 @@
 
 - 選取了檔案的請求未顯示 payload 資訊
 ![](06.png)
+
+# 6.覆寫內容
+
+- 可用於修改網頁內容、測試不同的樣式或功能
