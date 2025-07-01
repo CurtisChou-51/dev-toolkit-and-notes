@@ -39,6 +39,15 @@ services.AddAuthentication("CookieScheme") // 設定預設為 Cookie
     });
 ```
 
+- 如果使用 `AddIdentity` 方法，則會自動註冊驗證機制(Authentication)、授權機制(Authorization)、其他使用者與角色相關的服務(如 SignInManager、UserManager)，且為 Cookie 認證方案，並且預設名稱為 `Identity.Application`，此時就不需要再寫 `services.AddAuthentication` 與 `services.AddCookie`。
+- 也可以再加上 `AddEntityFrameworkStores` 與 EFCore 資料庫整合。
+
+```csharp
+services.AddIdentity<AspNetUser, AspNetRole>()
+    .AddRoleManager<RoleManager<AspNetRole>>()
+    .AddEntityFrameworkStores<DbContext>();
+```
+
 
 ## `[Authorize]` 屬性
 
