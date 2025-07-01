@@ -2,6 +2,9 @@
 
 ## UseAuthentication vs UseAuthorization
 
+- `UseAuthentication` 和 `UseAuthorization` 都屬於 ASP.NET Core 的 Middleware，用於處理認證和授權。
+- 以往需要驗證與授權的應用程式需要呼叫 `app.UseAuthentication()` 與 `app.UseAuthorization()`，而在 ASP.NET Core 6.0 之後，`UseAuthentication` 預設會被自動啟用。
+
 | 元件                        | 說明                                                         |
 | ------------------------- | ---------------------------------------------------------- |
 | `app.UseAuthentication()` | 驗證使用者身份，解析請求中的身份驗證資訊（如 Cookie 或 JWT），並建立 `HttpContext.User`。 |
