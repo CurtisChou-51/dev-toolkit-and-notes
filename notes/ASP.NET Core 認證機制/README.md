@@ -93,3 +93,9 @@ await HttpContext.SignOutAsync("CookieScheme");
 - Microsoft 參考：[在 ASP.NET Core 中使用 Cookie 驗證](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/cookie?view=aspnetcore-8.0#cookie-policy-middleware)  
 
 ![](03.png)
+
+- 如果沒有設置持久化存儲，也可以在事件檢視器當中看到相關警告，說明應用程式找不到可用的持久性儲存位置，一旦應用程式結束或 IIS 重啟就會無法解密 Cookie
+
+![](04.png)
+
+![](05.png)
