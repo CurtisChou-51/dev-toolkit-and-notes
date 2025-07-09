@@ -1,4 +1,4 @@
-public class MinimumAgeRequirement : IAuthorizationRequirement
+﻿public class MinimumAgeRequirement : IAuthorizationRequirement
 {
     public int MinimumAge { get; }
 
