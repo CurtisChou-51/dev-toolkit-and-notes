@@ -64,6 +64,14 @@ services.AddIdentity<AspNetUser, AspNetRole>()
 [Authorize(AuthenticationSchemes = "JwtScheme")]
 ```
 
+## AuthorizationHandler
+
+- 客製化授權邏輯可以透過繼承 `AuthorizationHandler<TRequirement>` 來實作，其中 `TRequirement` 是實作自 `IAuthorizationRequirement` 的類別，用來表示一種授權「條件」或「規則」
+- `Requirement` 類別通常不包含邏輯，而是攜帶判斷所需的資料，實際的授權邏輯則實作在對應的 `AuthorizationHandler` 中。
+
+- 範例1：[AuthorizationHandler-Ex1](AuthorizationHandler-Ex1.cs)，透過 `IAuthorizationRequirement` 設置條件給 `AuthorizationHandler` 使用
+
+- 範例2：[AuthorizationHandler-Ex2](AuthorizationHandler-Ex2.cs)，透過由其他服務(`roleFuncService`)提供的資料控制授權 
 
 ## Cookie 登入與登出
 
