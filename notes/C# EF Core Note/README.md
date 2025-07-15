@@ -10,7 +10,7 @@
 - 如果指定實體的欄位類型與查詢語法所得的資料類型不符會產生錯誤，例如實體的欄位為 `public string A { get; set; }`，如果查詢所取得的 A 欄位為 null 則會產生 `SqlNullValueException`
 ![](01.png)
 
-- 如果指定實體的欄位不存在於查詢語法中也會產生錯誤，例如實體的欄位為 `public string? XXX { get; set; }`，查詢語法也需要有對應的結果
+- 如果指定實體的欄位不存在於查詢語法中也會產生錯誤，例如實體的欄位為 `public string? XXX { get; set; }`，查詢語法也需要有對應的結果  
 ![](02.png)
 
 ## 變更追蹤機制與 SaveChanges
