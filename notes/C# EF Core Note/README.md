@@ -13,6 +13,13 @@
 - 如果指定實體的欄位不存在於查詢語法中也會產生錯誤，例如實體的欄位為 `public string? XXX { get; set; }`，查詢語法也需要有對應的結果  
 ![](02.png)
 
+## Dapper 並用 Connection 與 Transaction
+
+- 在 EF Core 可用 `DbContext.Database.GetDbConnection()` 取得目前 DbContext 使用的資料庫連線，此連線可以用於其他資料庫操作如使用 Dapper 進行查詢
+- 如果連線是透過 EF Core 預設行為取得的(沒有自己 `connection.Open()` 或是使用外部連線)，則不需要手動開啟或關閉連線，EF Core 會自動處理，也不需要加上 `using` 或是 `Dispose`
+- 在 EF Core 可用 `DbContext.Database.BeginTransaction()` 啟用交易，此時可透過 `Database.CurrentTransaction?.GetDbTransaction()` 取得目前交易，如此可將 Dapper 的執行也納入交易中
+- Example: [BaseDataAccess.cs](BaseDataAccess.cs)
+
 ## 變更追蹤機制與 SaveChanges
 
 - EF Core 具有變更追蹤機制，從資料庫載入實體後，EF Core 會自動追蹤這些實體的狀態變化，例如 `dbContext.XXXEntities.Add(entity)`、`dbContext.XXXEntities.Update(entity)`、`dbContext.XXXEntities.Remove(entity)` 等方法
