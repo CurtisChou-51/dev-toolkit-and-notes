@@ -1,0 +1,36 @@
+<CodeSnippet Format="1.1.0" xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <Header>
+    <Title>func</Title>
+    <Author>Curtis</Author>
+    <Shortcut>func</Shortcut>
+    <Description>panel-function 的程式碼片段</Description>
+  </Header>
+  <Snippet>
+    <Declarations>
+      <Literal>
+        <ID>func</ID>
+        <ToolTip>function name</ToolTip>
+        <Default>addSave</Default>
+      </Literal>
+    </Declarations>
+    <Code Language="JavaScript"><![CDATA[
+/**
+ * 新增儲存
+ */
+async $func$($$btn) {
+    ui.loadingStart();
+    try {
+        let data = $$btn.closest('form').serializeArray();
+        let resp = await ajax.post(this.urls['$func$'], data);
+        if (resp.ReqFail)
+            return this.dialog.showFieldErrors(resp.FieldErrors);
+        this.dialog.closeDialog();
+        this.search({ page: true });
+    }
+    finally {
+        ui.loadingEnd();
+    }
+}
+]]></Code>
+  </Snippet>
+</CodeSnippet>
