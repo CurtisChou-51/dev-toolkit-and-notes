@@ -43,8 +43,10 @@ services.AddAuthentication("CookieScheme") // 設定預設為 Cookie
     });
 ```
 
+## ASP.NET Core Identity
+
 - 如果使用 `AddIdentity` 方法，則會自動註冊驗證機制(Authentication)、授權機制(Authorization)、其他使用者與角色相關的服務(如 SignInManager、UserManager)，且為 Cookie 認證方案，並且預設名稱為 `Identity.Application`，此時就不需要再寫 `services.AddAuthentication` 與 `services.AddCookie`。
-- 也可以再加上 `AddEntityFrameworkStores` 與 EFCore 資料庫整合；如果不使用 EFCore 整合，則需要自行實作使用者與角色的儲存如 `IUserStore` 、 `IRoleStore`
+- 也可以再加上 `AddEntityFrameworkStores` 與 EFCore 資料庫整合；如果不使用 EFCore 整合，則需要自行實作使用者與角色的儲存如 `IUserStore`、`IRoleStore`
 
 ```csharp
 services.AddIdentity<AspNetUser, AspNetRole>()
@@ -53,7 +55,8 @@ services.AddIdentity<AspNetUser, AspNetRole>()
 ```
 
 - EFCore 整合後，ASP.NET Core Identity 會使用 EFCore 的資料庫 context 來儲存使用者、角色及相關身份資料，並且會有 `GenerateClaimsAsync` 的預設實作來產生使用者的 Claims，通常會包含 UserId、UserName、Email、PhoneNumber、SecurityStamp，透過註冊的 `IUserStore<TUser>` 與 `IRoleStore<TRole>` 作為資料來源
-- 自訂 claims 範例：
+- 如果需要自訂 Claims，可以透過將資料寫入 `IdentityUserClaim` 表格來實現，EFCore 的預設實作會讀取這個資料來源，這些 Claims 就會自動被加入到使用者的 Claims 中
+- 也可以透過繼承 `UserClaimsPrincipalFactory<TUser, TRole>` 來實作自訂的 Claims 生成邏輯，範例：
 
 ```csharp
 public class CustomClaimsPrincipalFactory : UserClaimsPrincipalFactory<ApplicationUser, IdentityRole>
