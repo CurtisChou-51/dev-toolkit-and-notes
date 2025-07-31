@@ -11,7 +11,7 @@
 | `app.UseAuthorization()`  | 檢查授權條件，根據 `[Authorize]` 的設定（如角色、政策），檢查 `HttpContext.User` 是否有權限。  |
 
 > [!TIP]
-> **認證(Authentication)**：驗證身份
+> **認證(Authentication)**：驗證身份  
 > **授權(Authorization)**：檢查權限
 
 ## 相關方法與 scheme 名稱
