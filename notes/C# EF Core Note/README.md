@@ -27,3 +27,15 @@
 - 如果查詢時使用了 `AsNoTracking()`，則 EF Core 不會追蹤這些實體的狀態變化，也不會在呼叫 `SaveChanges()` 時產生 SQL 語句，對於只查詢不需要追蹤修改的情況下，可以使用 `AsNoTracking()` 減少記憶體使用
 
 ## Migrations
+
+- EF Core 的 Migration 是用來管理資料庫結構變更的工具，透過將資料模型（Code First）與資料庫結構的差異轉換成可追蹤的版本記錄
+
+### 版本控制概念
+
+- 每個 Migration 檔案都是一次資料庫結構變更的版本記錄，會按照建立順序套用
+- EF Core 會在資料庫建立一個 __EFMigrationsHistory 系統表，用來記錄已套用的 Migration
+
+### 指令
+
+- 新增 Migration: 修改了資料模型(新增、刪除或修改資料表、欄位等)之後使用，會在專案中生成一個新的 Migration 檔案，裡面包含了這次變更的描述
+- 套用 Migration: 根據 Migration 檔案中的指令更新資料庫結構
