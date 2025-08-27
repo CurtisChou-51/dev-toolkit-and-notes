@@ -28,5 +28,41 @@ dropZone.addEventListener('dragover', function(event) {
 });
 ```
 
+## FileList 操作範例
+
+- FileList 是唯讀，但可透過 DataTransfer 物件來建立新的 FileList。範例為複合 input 元素與拖放事件選取檔案，將檔案資訊儲存於 javascript 物件中，在適當時機再轉為 FileList
+
+```javascript
+let selectedFiles = new Map();
+function addFiles(files) {
+    for (const file of files) {
+        const fileKey = file.name + '_' + file.size;
+        // check duplicate ...
+        selectedFiles.set(fileKey, file);
+    }
+}
+
+fileInput.addEventListener('change', (e) => {
+    addFiles(e.target.files);
+    fileInput.value = '';
+});
+
+dropZone.addEventListener('drop', function(event) {
+    event.preventDefault();
+    addFiles(event.dataTransfer.files);
+});
+
+// 將 Map 內儲存的檔案資訊轉為 FileList
+function getFiles() {
+    const dataTransfer = new DataTransfer();
+    for (const file of selectedFiles.values()) {
+        dataTransfer.items.add(file);
+    }
+    return {
+        CaseFiles: dataTransfer.files
+    };
+}
+```
+
 ## Binding - 以 ASP.NET Core MVC 為例
 
