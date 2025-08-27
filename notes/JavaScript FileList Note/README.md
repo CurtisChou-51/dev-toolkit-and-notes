@@ -80,10 +80,9 @@ public class UploadFilesViewModel
 <input type="file" name="CaseFiles" multiple />
 ```
 
-- 如果使用原生表單提交或是由表單直接生成 FormData 物件則不需要特別處理；如果是自行使用 JavaScript 建立 FormData 物件，則需要注意 binding 規則
+- 如果使用原生表單提交或是由表單直接生成 FormData 物件則不需要特別處理；如果是自行使用 javascript 建立 FormData 物件，則需要注意 binding 規則
 - FileList 與一般 array-like 結構的 binding 規則不同，並不支援用 [index] 的方式去綁定 IFormFile 集合
 - 如下的表單欄位名稱 (Form field name) 送到後端之後是無法正確 binding 的  
-
 ![](01.png)
 
 - 如下範例為正確的表單欄位名稱  
