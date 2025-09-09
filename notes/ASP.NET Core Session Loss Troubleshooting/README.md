@@ -18,4 +18,7 @@
 
 ## Response Set-Cookie 的怪異狀況
 
-- 發現正式環境 Response Header 中的 Set-Cookie 出現了兩次 SameSite 的設定
+- 發現正式環境 Response Header 中的 Set-Cookie 出現了兩次 SameSite 的設定，其中一個是 "None"，另一個是 "Strict"，但是網站程式的設定只有 "None"，且開發環境網站啟動後，Set-Cookie 也只有一個 "SameSite=None"
+- 故推測是 WAF 或 IIS 在某些狀況下會額外加上 "SameSite=Strict" 的設定
+
+![](02.png)
