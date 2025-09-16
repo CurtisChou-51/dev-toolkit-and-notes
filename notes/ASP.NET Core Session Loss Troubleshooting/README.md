@@ -14,7 +14,24 @@
 ## 初步推測原因
 
 - Session ID 透過 Cookie 傳遞，Session 遺失可能是 Cookie 沒有被瀏覽器帶回，觀察 Chrome Developer Tool 發現 Cookie 內的 Session ID 確實發生了改變
-- 正式環境會套用 WAF，WAF 與 IIS 溝通可能走 http 協定而非 https，可能導致被設定為 "secure" 的 Cookie 無法傳送。這是一個可能原因，但應該不會只在特定操作後發生
+
+## Cookie 屬性
+
+- Response Header 中 Set-Cookie 的內容範例如下：
+
+```
+Set-Cookie: SessionId=abc123; Secure; HttpOnly; SameSite=Strict
+```
+
+| 屬性          | 主要用途                          | 限制/效果                                                                                             |
+| ------------ | -------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| **Secure**   | 確保 Cookie 只會在 HTTPS 連線中傳送 | 瀏覽器不會在 HTTP 明文請求時附帶該 Cookie                                                                 |
+| **HttpOnly** | 防止 JavaScript 存取              | JavaScript 無法讀取或修改該 Cookie，但仍會隨 HTTP 請求送出                                                 |
+| **SameSite** | 限制 Cookie 在跨站請求中是否能送出   | `Strict`：僅同站請求帶上 Cookie<br> `Lax`：允許部分跨站（如 GET link/form submit）<br> `None`：允許跨站，但需搭配 `Secure` |
+
+
+- Session 所使用的 Cookie 不會透過 JavaScript 存取，可以排除 `HttpOnly` 影響
+- 正式環境有 HTTPS，初步可以排除 `Secure` 影響。但正式環境會套用 WAF，WAF 與 IIS 溝通可能走 HTTP 協定而非 HTTPS，可能導致被設定為 `Secure` 的 Cookie 無法傳送。這是一個可能原因，但應該不會只在特定操作後發生
 
 ## Response Set-Cookie 的怪異狀況
 
@@ -22,3 +39,5 @@
 - 故推測是 WAF 或 IIS 在某些狀況下會額外加上 "SameSite=Strict" 的設定
 
 ![](02.png)
+
+- 如果是 "SameSite=Strict" 的設定生效，那麼就符合了 `由特定第三方 OAuth 服務登入`、`從其他外部網站連結進入該網站` Session 遺失的狀況，因為這些都是跨站請求
