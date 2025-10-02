@@ -44,3 +44,17 @@ Set-Cookie: SessionId=abc123; Secure; HttpOnly; SameSite=Strict
 ![](02.png)
 
 - 如果是 "SameSite=Strict" 的設定生效，那麼就符合了 `由特定第三方 OAuth 服務登入`、`從其他外部網站連結進入該網站` Session 遺失的狀況，因為這些都是跨站請求
+- 這些問題也在 Cookie 的 "SameSite=Strict" 移除後解決了
+
+## Chrome Developer Tool 的 "前往"
+
+- 使用 Chrome Developer Tool 的 "前往" 功能也有 Session 遺失，這也算是一種跨站請求嗎? 一開始我並不確定這個操作方法發出的請求與一般使用者直接在網址列輸入網址的請求有什麼不同
+- 因此在開發環境實現一個列出 Request Header 的小功能，並使用 "前往" 功能發出請求，觀察 Request Header 的差異
+
+- 直接在網址列輸入網址的 Request Header
+![](03.png)
+
+- 使用 "前往" 功能發出的 Request Header
+![](04.png)
+
+- 可以發現兩者的差異在於 `Sec-Fetch-Site`，直接輸入網址的值是 `none`，而 "前往" 功能的值是 `cross-site`
