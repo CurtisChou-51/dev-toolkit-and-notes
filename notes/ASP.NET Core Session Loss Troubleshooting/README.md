@@ -33,6 +33,9 @@ Set-Cookie: SessionId=abc123; Secure; HttpOnly; SameSite=Strict
 - Session 所使用的 Cookie 不會透過 JavaScript 存取，可以排除 `HttpOnly` 影響
 - 正式環境有 HTTPS，初步可以排除 `Secure` 影響。但正式環境會套用 WAF，WAF 與 IIS 溝通可能走 HTTP 協定而非 HTTPS，可能導致被設定為 `Secure` 的 Cookie 無法傳送。這是一個可能原因，但應該不會只在特定操作後發生
 
+> [!NOTE]  
+> 如果是沒有 HTTPS 的測試環境出現 Session 遺失，可以先檢查 `Secure` 屬性，這是一個常見原因
+
 ## Response Set-Cookie 的怪異狀況
 
 - 發現正式環境 Response Header 中的 Set-Cookie 出現了兩次 SameSite 的設定，其中一個是 "None"，另一個是 "Strict"，但是網站程式的設定只有 "None"，且開發環境網站啟動後，Set-Cookie 也只有一個 "SameSite=None"
