@@ -129,3 +129,9 @@ body: Use markdown to describe the changes in bullet points, each starting with 
 - 啟用後會在程式碼中顯示 nullable 提示：
 
 ![](專案屬性/03.png)
+
+## 建置時顯示詳細的訊息
+
+- `工具 > 選項 > 專案和方案 > 建置和執行`，調整為 `詳細` 或 `診斷`，可以看到更詳細的建置訊息
+
+![](建置/01.png)
