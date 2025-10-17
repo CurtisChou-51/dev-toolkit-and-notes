@@ -100,3 +100,35 @@ delete XXXTable
   join XXXTable_2 n2 on n.Id = n2.Id
  where n.Col_1 = 'xxx' and n2.Col_A = 'aaa';
 ```
+
+### 7. `update with output to temp table`
+
+- 使用 `output` 搭配 `update`，可以將更新前後的資料寫入臨時表，方便後續處理
+- 範例：將符合條件的案件關閉，並將更新前後的狀態寫入 `CaseLog` 紀錄
+
+```sql
+create table #tmpCases (
+    CaseId bigint,
+    OldStatus int,
+    NewStatus int
+);
+
+update Cases
+   set Status     = @CloseStatus,
+       ModifyTime = @ActionTime
+output inserted.CaseId, 
+       deleted.Status as OldStatus,
+       inserted.Status as NewStatus
+  into #tmpCases
+ where CreateTime < @threshold
+   and Status not in (@CloseStatus, @CompleteStatus);
+
+insert into CaseLog
+  (CaseId, ActionTime, ActionType, OldStatus, NewStatus)
+select CaseId, 
+       @ActionTime as ActionTime,
+       @ActionType as ActionType, 
+       OldStatus,
+       NewStatus
+  from #tmpCases;
+```
