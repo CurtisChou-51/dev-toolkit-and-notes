@@ -23,6 +23,9 @@ builder.Services.Configure<SecurityStampValidatorOptions>(options =>
 });
 ```
 
+> [!NOTE]
+> [客製化的 UserClaimsPrincipalFactory](https://github.com/CurtisChou-51/dev-toolkit-and-notes/tree/main/notes/ASP.NET%20Core%20%E8%AA%8D%E8%AD%89%E6%A9%9F%E5%88%B6#aspnet-core-identity)
+
 ---
 
 ## 問題原因
@@ -77,9 +80,8 @@ builder.Services.AddScoped<ISecurityStampValidator, CustomSecurityStampValidator
 ```
 
 > [!NOTE]
-> 還是要呼叫 await base.ValidateAsync(context);
+> 還是要呼叫 await base.ValidateAsync(context);  
 > 才會執行原本的 SecurityStamp 驗證邏輯，確保使用者狀態正確
-
 
 ## 其他補充
 
