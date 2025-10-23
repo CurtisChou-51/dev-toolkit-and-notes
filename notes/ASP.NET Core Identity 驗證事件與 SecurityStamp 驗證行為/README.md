@@ -36,7 +36,9 @@ builder.Services.Configure<SecurityStampValidatorOptions>(options =>
 ```csharp
 options.Events.OnValidatePrincipal = SecurityStampValidator.ValidatePrincipalAsync;
 ```
-- 因此 Identity 的內部驗證機制（包含 SecurityStamp 驗證與 Claims 重建）都被取代
+- 因此 Identity 的部分內部驗證機制（包含 SecurityStamp 驗證與 Claims 重建）被取代
+
+- 取代的機制是預設的 `SecurityStampValidator` 裡面會去呼叫 `SignInManager.CreateUserPrincipalAsync()` 來重建 Claims，參考官方 Source Code [SecurityStampValidator](https://github.com/dotnet/aspnetcore/blob/main/src/Identity/Core/src/SecurityStampValidator.cs)、[SignInManager](https://github.com/dotnet/aspnetcore/blob/main/src/Identity/Core/src/SignInManager.cs)，因此如果覆蓋掉 `SecurityStampValidator`，就不會呼叫 `CreateUserPrincipalAsync()`，也就不會進入 `UserClaimsPrincipalFactory`
 
 ## 正確解法
 
@@ -81,7 +83,9 @@ builder.Services.AddScoped<ISecurityStampValidator, CustomSecurityStampValidator
 
 > [!NOTE]
 > 還是要呼叫 await base.ValidateAsync(context);  
-> 才會執行原本的 SecurityStamp 驗證邏輯，確保使用者狀態正確
+> 才會執行原本的 SecurityStamp 驗證邏輯，確保使用者狀態正確  
+> 並且原本如果有寫 OnValidatePrincipal 也要移除  
+> 否則不會進入 CustomSecurityStampValidator
 
 ## 其他補充
 
