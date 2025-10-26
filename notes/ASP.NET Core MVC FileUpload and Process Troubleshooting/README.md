@@ -6,6 +6,8 @@
 
 ## 示意程式
 
+- 程式行為：將上傳的檔案保存至暫存檔（路徑為 `tmpSave`），之後使用 `FFMpeg` 對該檔案進行處理
+
 ```csharp
 public IActionResult SendFile(SendFileViewModel vm)
 {
@@ -20,14 +22,14 @@ public IActionResult SendFile(SendFileViewModel vm)
 ## 處理過程
 
 - 在 `TrimAudioByFFMpeg` 執行前中斷程式執行觀察暫存檔，發現此時檔案大小確實與原檔案不一致，直到`SendFile` 方法結束為止。
-- `using` 會在整個 scope 結束後呼叫 `Dispose()`，而此時使用 `using ... ;` 語法糖的 scope 為 `SendFile` 方法。
-- 可知在 `TrimAudioByFFMpeg` 執行時尚未將 stream `Dispose()`，檔案仍被占用或資料未完整寫入，導致判定為格式錯誤而失敗。
 
 - `FFMpeg` 處理時檔案  
 ![](02.png)
 
 - `SendFile` 方法結束時檔案  
 ![](03.png)
+
+- 使用 C# 的 using declaration（例如 `using var stream = ...;`）會在包含該宣告的 scope 結束時自動呼叫 `Dispose()`。在原始程式中，這個 scope 是 `SendFile` 方法本身，因此在呼叫 `TrimAudioByFFMpeg(...)` 時，`FileStream` 尚未被關閉（尚未執行 `Dispose()`），可能導致資料尚未完全寫入或檔案被鎖定，進而讓 FFmpeg 讀取失敗或判定為格式錯誤。
 
 ## 調整程式
 
@@ -44,3 +46,4 @@ TrimAudioByFFMpeg(tmpSave, tmpConvert, startTime, endTime);
 > [!NOTE]
 > `using ... ;` 語法糖簡化了寫法，但也必須注意 scope 範圍。  
 > 如果資源會跨多段程式使用，或需要明確控制釋放時機，使用傳統的 `using (...) {}` 語法是個好選擇。
+> 或是直接將 `using ... ;` 區段提取為獨立方法，也能達到明定 scope 範圍效果。
