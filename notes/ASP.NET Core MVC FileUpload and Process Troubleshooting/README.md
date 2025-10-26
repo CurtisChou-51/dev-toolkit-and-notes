@@ -45,5 +45,5 @@ TrimAudioByFFMpeg(tmpSave, tmpConvert, startTime, endTime);
 
 > [!NOTE]
 > `using ... ;` 語法糖簡化了寫法，但也必須注意 scope 範圍。  
-> 如果資源會跨多段程式使用，或需要明確控制釋放時機，使用傳統的 `using (...) {}` 語法是個好選擇。
+> 如果資源會跨多段程式使用，或需要明確控制釋放時機，使用傳統的 `using (...) {}` 語法是個好選擇。  
 > 或是直接將 `using ... ;` 區段提取為獨立方法，也能達到明定 scope 範圍效果。
