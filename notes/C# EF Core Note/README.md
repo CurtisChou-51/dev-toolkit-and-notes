@@ -39,3 +39,51 @@
 
 - 新增 Migration: 修改了資料模型(新增、刪除或修改資料表、欄位等)之後使用，會在專案中生成一個新的 Migration 檔案，裡面包含了這次變更的描述
 - 套用 Migration: 根據 Migration 檔案中的指令更新資料庫結構
+
+### 自行調整 Migration
+
+- 可以手動編輯 Migration 檔案中的 Up() 和 Down() 方法，以自訂資料庫結構變更的邏輯
+- 以下範例展示了修改 AspNetUserTokens 資料表中的欄位長度，因為變更的欄位包含主鍵，EF Core Migration 生成的 SQL 在執行時可能會遇到問題，因此手動調整 Migration 內容先移除主鍵待變更完成再重新建立：
+
+```csharp
+protected override void Up(MigrationBuilder migrationBuilder)
+{
+    // 移除主鍵 (手動調整)
+    migrationBuilder.DropPrimaryKey(name: "PK_AspNetUserTokens", table: "AspNetUserTokens");
+
+    // 調整欄位長度
+    migrationBuilder.AlterColumn<string>(
+        name: "Value",
+        table: "AspNetUserTokens",
+        type: "nvarchar(100)",
+        maxLength: 100,
+        nullable: true,
+        oldClrType: typeof(string),
+        oldType: "nvarchar(max)",
+        oldNullable: true);
+
+    migrationBuilder.AlterColumn<string>(
+        name: "Name",
+        table: "AspNetUserTokens",
+        type: "nvarchar(50)",
+        maxLength: 50,
+        nullable: false,
+        oldClrType: typeof(string),
+        oldType: "nvarchar(450)");
+
+    migrationBuilder.AlterColumn<string>(
+        name: "LoginProvider",
+        table: "AspNetUserTokens",
+        type: "nvarchar(50)",
+        maxLength: 50,
+        nullable: false,
+        oldClrType: typeof(string),
+        oldType: "nvarchar(450)");
+
+    // 重新建立主鍵 (手動調整)
+    migrationBuilder.AddPrimaryKey(
+        name: "PK_AspNetUserTokens",
+        table: "AspNetUserTokens",
+        columns: new[] { "UserId", "LoginProvider", "Name" });
+}
+```
