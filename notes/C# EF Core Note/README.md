@@ -87,3 +87,22 @@ protected override void Up(MigrationBuilder migrationBuilder)
         columns: new[] { "UserId", "LoginProvider", "Name" });
 }
 ```
+
+## 查詢翻譯引擎強化
+
+- 版本較新的 EF Core Microsoft 對查詢翻譯引擎進行了強化，能夠更智慧地將 LINQ 查詢自動轉譯為 SQL
+- 以往這類查詢很可能會造成 N+1 問題，但在開發時發現 EF Core 將此查詢轉為了 left join，避免了 N+1 問題 (可透過 `query.ToQueryString()` 觀察實際 sql)
+```csharp
+var query = from u in _dbContext.Users
+            select new
+            {
+                User = u,
+                RoleNames = (
+                    from ur in _dbContext.UserRoles
+                    join r in _dbContext.Roles on ur.RoleId equals r.Id
+                    where ur.UserId == u.Id
+                    select r.Description
+                ).ToList()
+            };
+```
+- 而 left join 之後資料庫端筆數變多，但是在程式端的結果仍是開發者所預期的扁平結果，是透過 EF Core 的 Collection Projection 機制實現的
