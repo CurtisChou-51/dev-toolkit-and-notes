@@ -1,4 +1,4 @@
-<Query Kind="Program" />
+﻿<Query Kind="Program" />
 
 
 void Main()
@@ -9,11 +9,14 @@ void Main()
     HashSet<string> targetFiles = new(["Index.cshtml", "index.js", $"{module}Controller.cs", $"{module}Srv.cs", $"{module}Dao.cs", $"{module}ViewModel.cs"], StringComparer.OrdinalIgnoreCase);
     string[] searchFolders = { "Controllers", "DataAccess", "Models", "Services", "Views", @"wwwroot\cust"  };
     var files = searchFolders
-        .SelectMany(p => Directory.EnumerateFiles(Path.Combine(projectRoot, p), "*", SearchOption.AllDirectories))
+		.Select(x => Path.Combine(projectRoot, x))
+		.Where(Directory.Exists)
+        .SelectMany(p => Directory.EnumerateFiles(p, "*", SearchOption.AllDirectories))
         .Where(f => f.Contains(module, StringComparison.OrdinalIgnoreCase))
         .Where(f => targetFiles.Contains(Path.GetFileName(f)));
 
-    openFiles(files);
+    if (files.Any())
+        openFiles(files);
 
 }
 
