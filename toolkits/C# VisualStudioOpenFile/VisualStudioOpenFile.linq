@@ -6,16 +6,22 @@ void Main()
     string module = "CaseOverview";
     string projectRoot = @"D:\MyProject\MyProject.Web";
 
-    string[] patterns = { "*Controller.cs", "*Srv.cs", "*Dao.cs", "*Model.cs", "index.cshtml", "index.js" };
+    HashSet<string> targetFiles = new(["Index.cshtml", "index.js", $"{module}Controller.cs", $"{module}Srv.cs", $"{module}Dao.cs", $"{module}ViewModel.cs"], StringComparer.OrdinalIgnoreCase);
+    string[] searchFolders = { "Controllers", "DataAccess", "Models", "Services", "Views", @"wwwroot\cust"  };
+    var files = searchFolders
+        .SelectMany(p => Directory.EnumerateFiles(Path.Combine(projectRoot, p), "*", SearchOption.AllDirectories))
+        .Where(f => f.Contains(module, StringComparison.OrdinalIgnoreCase))
+        .Where(f => targetFiles.Contains(Path.GetFileName(f)));
 
-    var files = patterns
-        .SelectMany(p => Directory.GetFiles(projectRoot, p, SearchOption.AllDirectories))
-        .Where(f => !f.Contains(@"\bin\") && !f.Contains(@"\obj\"))
-        .Where(f => Path.GetFullPath(f).Contains(module, StringComparison.OrdinalIgnoreCase))
-        .ToList();
+    openFiles(files);
 
-    string fileArgs = string.Join(", ", files.Select(f => $"\"{f}\""));
-    string cmd = @$"Start-Process devenv -ArgumentList @( ""/edit"", {fileArgs} )";
+}
+
+void openFiles(IEnumerable<string> files)
+{
+     string fileArgs = string.Join(", ", files.Select(f => $"\"{f}\""));
+     string cmd = @$"Start-Process devenv -ArgumentList @( ""/edit"", {fileArgs} )";
+
 
     var psi = new ProcessStartInfo()
     {
@@ -34,5 +40,4 @@ void Main()
         if (!string.IsNullOrEmpty(error))
             Console.WriteLine("Error: " + error);
     }
-    
 }
