@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @OnlyCurrentDoc
  */
 
@@ -10,6 +10,11 @@ function printJson() {
 function printSql() {
   let sheets = SpreadsheetApp.getActiveSpreadsheet().getSheets();
   console.log(getSql(sheets));
+}
+
+function printSqlValues() {
+  let sheets = SpreadsheetApp.getActiveSpreadsheet().getSheets();
+  console.log(getSqlValues(sheets));
 }
 
 function doGet(e) {
@@ -36,6 +41,30 @@ function getSql(sheets) {
       }).join(', ');
       sb.push(`insert into ${tableName} (${cols}) values (${values});`);
     }
+  }
+  return sb.join("\n");
+}
+
+function getSqlValues(sheets) {
+  let sb = [];
+  let json = getJson(sheets);
+  for (let tableName in json) {
+    sb.push("/* -------------------------------------------------------------------------------------- */");
+    sb.push(`select * from `);
+    sb.push(`( values`);
+    let sbTmp = [];
+    for (let row of json[tableName]) {
+      const values = Object.values(row).map(value => {
+        if (typeof value === 'string') {
+          return value === '' ? 'NULL' : `N'${value}'`;
+        }
+        return value;
+      }).join(', ');
+      sbTmp.push(`    (${values})`);
+    }
+    sb.push(sbTmp.join(',\n'));
+    const cols = Object.keys(json[tableName][0]).join(', ');
+    sb.push(`) as ${tableName} (${cols});`);
   }
   return sb.join("\n");
 }
