@@ -13,6 +13,29 @@
 - 如果指定實體的欄位不存在於查詢語法中也會產生錯誤，例如實體的欄位為 `public string? XXX { get; set; }`，查詢語法也需要有對應的結果  
 ![](02.png)
 
+## IQueryable 延遲執行
+
+- EF Core 的 IQueryable 查詢是延遲執行的，只有在呼叫特定的方法時才查詢才會被真正執行，例如：
+  - `ToList()`
+  - `FirstOrDefault()`
+  - `AsEnumerable()`
+  - `Count()`
+  - `Any()`
+  - `Sum()`
+
+- 以下範例 `ToDictionary()` 會呼叫 `AsEnumerable()`，由於在之前的查詢沒有使用 `Select()` 投影，因此會將整個 User 實體載入記憶體，相當於執行了 `select * from Users` 而非 `select Id, UserName from Users`
+```csharp
+var dict = _dbContext.Users
+    .ToDictionary(x => x.Id, x => x.UserName);
+```
+
+- 在一個應用情境中，Files 資料表還存有檔案內容，因此直接 `ToDictionary()` 的方式會載入大量不必要的資料，調整為先使用 `Select()` 投影效能有明顯提升
+```csharp
+var dict = _dbContext.Files
+    .Select(u => new { u.Id, u.FileName })
+    .ToDictionary(x => x.Id, x => x.FileName);
+```
+
 ## Dapper 並用 Connection 與 Transaction
 
 - 在 EF Core 可用 `DbContext.Database.GetDbConnection()` 取得目前 DbContext 使用的資料庫連線，此連線可以用於其他資料庫操作如使用 Dapper 進行查詢
