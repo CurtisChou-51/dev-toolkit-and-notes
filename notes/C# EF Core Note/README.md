@@ -23,16 +23,20 @@
   - `Any()`
   - `Sum()`
 
-- 以下範例 `ToDictionary()` 會呼叫 `AsEnumerable()`，由於在之前的查詢沒有使用 `Select()` 投影，因此會將整個 User 實體載入記憶體，相當於執行了 `select * from Users` 而非 `select Id, UserName from Users`
-```csharp
-var dict = _dbContext.Users
-    .ToDictionary(x => x.Id, x => x.UserName);
-```
+### 應用範例
 
-- 在一個應用情境中，Files 資料表還存有檔案內容，因此直接 `ToDictionary()` 的方式會載入大量不必要的資料，調整為先使用 `Select()` 投影效能有明顯提升
+- 在一個應用情境中要讀取 Files 資料表的 Id 與 FileName 欄位並轉成 Dictionary，最初的寫法如下：
 ```csharp
 var dict = _dbContext.Files
-    .Select(u => new { u.Id, u.FileName })
+    .ToDictionary(x => x.Id, x => x.FileName);
+```
+
+- 查詢的觸發時機在於 `ToDictionary()` 會呼叫 `AsEnumerable()`，由於此查詢沒有先使用 `Select()` 投影，因此會將整個 Files 實體載入記憶體，相當於執行了 `select * from Files` 而非 `select Id, FileName from Files`
+- 而 Files 資料表還存有檔案內容，因此直接使用 `ToDictionary()` 的方式會載入大量不必要的資料，調整為先使用 `Select()` 投影效能有明顯提升：
+
+```csharp
+var dict = _dbContext.Files
+    .Select(x => new { x.Id, x.FileName })
     .ToDictionary(x => x.Id, x => x.FileName);
 ```
 
