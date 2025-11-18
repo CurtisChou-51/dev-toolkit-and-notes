@@ -60,3 +60,25 @@ public async Task<string> NonBlockingMethod()
 - 在網頁開發環境為何感受不直觀：
   - 網頁不像 WinForm 的 UI 執行緒被占用時會凍結畫面、沒有回應，使用者端的瀏覽器不會有任何異常表現
   - 開發環境通常只有開發者一人發送請求、負載不高，不會造成執行緒耗盡，即使執行緒被阻塞閒置也沒有明顯感覺
+
+## 高併發場景的差異
+
+- 假設有 200 個併發請求；執行緒池只有 100 個執行緒
+
+```csharp
+// 阻塞版本
+public IActionResult BlockingEndpoint()
+{
+    // 100 個執行緒全部被佔用；後續 100 個請求要排隊等待
+    var data = _httpClient.GetAsync("https://api.example.com/data").GetAwaiter().GetResult();
+    return Ok(data);
+}
+
+// 非阻塞版本
+public async Task<IActionResult> NonBlockingEndpoint()
+{
+    // 執行緒在 I/O 期間被釋放，可以處理更多請求
+    var data = await _httpClient.GetAsync("https://api.example.com/data");
+    return Ok(data);
+}
+```
