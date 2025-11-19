@@ -82,3 +82,39 @@ public async Task<IActionResult> NonBlockingEndpoint()
     return Ok(data);
 }
 ```
+
+- 以下範例透過 ThreadPool 設定最小與最大執行緒數量，並分別以 `Thread.Sleep(3000)` 與 `await Task.Delay(3000)` 來模擬耗時的 I/O 操作，可以看出在執行緒數量受限的情況下，阻塞方式整體執行時間高於非阻塞方式，原因就是執行緒被佔用無法處理其他工作
+
+- 範例程式 [Example30Threads.cs](Example30Threads.cs)：
+```csharp
+ThreadPool.SetMinThreads(30, 1);
+ThreadPool.SetMaxThreads(30, 1);
+
+Stopwatch sw = Stopwatch.StartNew();
+var tasks = Enumerable.Range(1, 100).Select(_ => Task.Run(DoWork)).ToArray();
+Task.WaitAll(tasks);
+sw.Stop();
+Console.WriteLine($"All tasks completed. Elapsed = {sw.Elapsed}");
+
+sw.Restart();
+var asyncTasks = Enumerable.Range(1, 100).Select(_ => Task.Run(DoWorkAsync)).ToArray();
+Task.WaitAll(asyncTasks);
+sw.Stop();
+Console.WriteLine($"All asyncTasks completed. Elapsed = {sw.Elapsed}");
+
+void DoWork()
+{
+    Thread.Sleep(3000);
+}
+
+async Task DoWorkAsync()
+{
+    await Task.Delay(3000);
+}
+```
+
+- 範例結果：
+```
+All tasks completed. Elapsed = 00:00:12.0775677
+All asyncTasks completed. Elapsed = 00:00:03.0261486
+```
