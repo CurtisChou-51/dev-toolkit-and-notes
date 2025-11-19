@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Example</title>
+    <link rel="stylesheet" href="index.css" />
+</head>
+<body>
+    <div class="container" id="panel">
+        <header>
+            <h2>Example</h2>
+            <div>
+                <button my-click="add"><img src="images/add.png">add</button>
+            </div>
+        </header>
+
+        <table id="myTable">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>name</th>
+                    <th>description</th>
+                    <th style="width:10rem;">actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-id="1763539106192">
+                    <td>1763539106192</td>
+                    <td>Item A</td>
+                    <td>description 1</td>
+                    <td><button my-click="edit"><img src="images/edit.png">edit</button><button my-click="remove"><img src="images/remove.png">remove</button></td>
+                </tr>
+                <tr data-id="1763539114494">
+                    <td>1763539114494</td>
+                    <td>Item B</td>
+                    <td>description 2</td>
+                    <td><button my-click="edit"><img src="images/edit.png">edit</button><button my-click="remove"><img src="images/remove.png">remove</button></td>
+                </tr>
+                <tr data-id="1763539120918">
+                    <td>1763539120918</td>
+                    <td>Item C</td>
+                    <td>description 3</td>
+                    <td><button my-click="edit"><img src="images/edit.png">edit</button><button my-click="remove"><img src="images/remove.png">remove</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>
