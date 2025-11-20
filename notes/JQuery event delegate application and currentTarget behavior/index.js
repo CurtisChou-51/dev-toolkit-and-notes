@@ -8,16 +8,15 @@
 
         build(panelId) {
             this.panel = $('#' + panelId);
-
-            const self = this;
-            this.panel.on('click', '[my-click]', function (e) {
+            this.panel.on('click', '[my-click]', (e) => {
                 console.log('target', e.target);
                 console.log('currentTarget', e.currentTarget);
 
-                let $target = $(e.currentTarget);
-                let f = self[$target.attr('my-click')];
-                if (typeof f === 'function')
-                    f.call(self, $target);
+                const $target = $(e.currentTarget);
+                const funcName = $target.attr('my-click');
+                const func = this[funcName];
+                if (typeof func === 'function')
+                    func.call(this, $target);
             });
         }
 
