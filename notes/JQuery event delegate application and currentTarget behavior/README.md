@@ -35,3 +35,17 @@ remove($btn) { ... }
   - 只需綁定一個事件處理器，比起逐一綁定減少記憶體使用
   - 透過這種方式綁定事件的 DOM 在刪除時不需要手動解除事件
   - 事件綁定在程式碼中集中管理，事件邏輯更直覺、較易維護
+
+## JavaScript 中的 target 與 currentTarget
+
+- event.target：實際觸發事件的元素，為**觸發者**
+- event.currentTarget：事件處理器所綁定的元素，為**被監聽者**
+
+```html
+<button my-click="add"><img src="images/add.png">add</button>
+```
+- 以這個範例來說
+  - 點選到按鈕內的 icon，此時 event.target 會是被點選的 icon，而 event.currentTarget 則會是按鈕本身
+  - 點選到按鈕本身，此時 event.target 與 event.currentTarget 都會是按鈕本身
+
+![](01.png)
