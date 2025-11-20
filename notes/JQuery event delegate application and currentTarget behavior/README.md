@@ -5,11 +5,12 @@
 - 這樣的背景下，我們會使用 JQuery 事件委派 (event delegation) 來處理網頁上的事件，並與 ES6 Class 結合，例如：
 
 ```javascript
-this.panel.on('click', '[my-click]', function (e) {
-    let $target = $(e.currentTarget);
-    let f = self[$target.attr('my-click')];
-    if (typeof f === 'function')
-        f.call(self, $target);
+this.panel.on('click', '[my-click]', (e) => {
+    const $target = $(e.currentTarget);
+    const funcName = $target.attr('my-click');
+    const func = this[funcName];
+    if (typeof func === 'function')
+        func.call(this, $target);
 });
 ```
 
