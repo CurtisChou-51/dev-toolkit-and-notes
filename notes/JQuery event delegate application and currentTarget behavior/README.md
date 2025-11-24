@@ -38,14 +38,11 @@ remove($btn) { ... }
 
 ## JavaScript 中的 target 與 currentTarget
 
-- event.target：實際觸發事件的元素，為**觸發者**
-- event.currentTarget：事件處理器所綁定的元素，為**被監聽者**
+- `event.target`：實際觸發事件的元素，為**觸發者**
+- `event.currentTarget`：事件處理器所綁定的元素，為**被監聽者**
 
-```html
-<button my-click="add"><img src="images/add.png">add</button>
-```
-- 以這個範例來說
-  - 點選到按鈕內的 icon，此時 event.target 會是被點選的 icon，而 event.currentTarget 則會是按鈕本身
-  - 點選到按鈕本身，此時 event.target 與 event.currentTarget 都會是按鈕本身
+- 以這個範例的 edit 按鈕來說
+  - 點選到按鈕內的 icon，此時 `event.target` 會是被點選的 icon，而 `event.currentTarget` 則會是按鈕本身
+  - 點選到按鈕本身，此時 `event.target` 與 `event.currentTarget` 都會是按鈕本身
 
 ![](01.png)
