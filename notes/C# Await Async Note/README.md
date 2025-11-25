@@ -57,6 +57,10 @@ public async Task<string> NonBlockingMethod()
 
 ## 直觀感受
 
+- [WinForm 範例](Form1.cs)，展示阻塞與非阻塞對 UI 執行緒的影響：
+  - 阻塞方式會導致 UI 凍結無法回應
+  - 非阻塞方式 UI 保持流暢
+
 - 在網頁開發環境為何感受不直觀：
   - 網頁不像 WinForm 的 UI 執行緒被占用時會凍結畫面、沒有回應，使用者端的瀏覽器不會有任何異常表現
   - 開發環境通常只有開發者一人發送請求、負載不高，不會造成執行緒耗盡，即使執行緒被阻塞閒置也沒有明顯感覺
@@ -82,6 +86,8 @@ public async Task<IActionResult> NonBlockingEndpoint()
     return Ok(data);
 }
 ```
+
+### Example of 30 Threads
 
 - 以下範例透過 ThreadPool 設定最小與最大執行緒數量，並分別以 `Thread.Sleep(3000)` 與 `await Task.Delay(3000)` 來模擬耗時的 I/O 操作，可以看出在執行緒數量受限的情況下，阻塞方式整體執行時間高於非阻塞方式，原因就是執行緒被佔用無法處理其他工作
 
