@@ -47,11 +47,33 @@ var dict = _dbContext.Files
 - 在 EF Core 可用 `DbContext.Database.BeginTransaction()` 啟用交易，此時可透過 `Database.CurrentTransaction?.GetDbTransaction()` 取得目前交易，如此可將 Dapper 的執行也納入交易中
 - Example: [BaseDataAccess.cs](BaseDataAccess.cs)
 
-## 變更追蹤機制與 SaveChanges
+## 變更追蹤機制 (Change Tracker) 與 SaveChanges
 
 - EF Core 具有變更追蹤機制，從資料庫載入實體後，EF Core 會自動追蹤這些實體的狀態變化，例如 `dbContext.XXXEntities.Add(entity)`、`dbContext.XXXEntities.Update(entity)`、`dbContext.XXXEntities.Remove(entity)` 等方法
 - 這些變更會被暫存在記憶體中，直到呼叫 `SaveChanges()` 方法時，EF Core 才會生成 SQL 語句真正執行對資料庫的操作，此時 EF Core 會自動建立一個 transaction 包住當前的所有「有追蹤的資料庫異動」
 - 如果查詢時使用了 `AsNoTracking()`，則 EF Core 不會追蹤這些實體的狀態變化，也不會在呼叫 `SaveChanges()` 時產生 SQL 語句，對於只查詢不需要追蹤修改的情況下，可以使用 `AsNoTracking()` 減少記憶體使用
+
+### 部分更新
+
+- 預設情況下，EF Core 在呼叫 `SaveChanges()` 時會更新所有被追蹤的實體的所有欄位，即使某些欄位沒有被修改，導致有些情境下會需要多執行一次查詢載入實體才能進行更新
+- 如果只想更新特定欄位可以使用 `Attach`，將這個實體附加到 DbContext，這樣做可以達到部分更新的效果並且一樣可以被變更追蹤機制追蹤：
+
+```csharp
+var user = new User
+{
+    Id = model.Id,       // 主鍵一定要
+    Name = model.Name
+    Email = model.Email
+};
+
+_dbContext.Attach(user);
+
+var entry = _dbContext.Entry(user);
+entry.Property(x => x.Name).IsModified = true;
+entry.Property(x => x.Email).IsModified = true;
+
+_dbContext.SaveChanges();
+```
 
 ## Migrations
 
