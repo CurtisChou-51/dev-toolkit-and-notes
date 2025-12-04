@@ -46,3 +46,28 @@ remove($btn) { ... }
   - 點選到按鈕本身，此時 `event.target` 與 `event.currentTarget` 都會是按鈕本身
 
 ![](01.png)
+
+
+## JQuery event delegate
+
+- Q：回到這個範例，事件本身綁定在 `this.panel`，為何 `event.currentTarget` 會是按鈕本身呢?
+- A：這是 JQuery 的特性，會將 Event Object 做包裝處理，而 `event.currentTarget` 在事件委派中會被設定為當前事件冒泡階段的 DOM，因此由結果來看 `event.currentTarget` 就像是用原生 JavaScript 直接對按鈕綁定事件時的 `event.currentTarget` 一樣
+
+- 參考：[Why does e.currentTarget change with jQuery's event delegation? - stackoverflow](https://stackoverflow.com/questions/44831556/why-does-e-currenttarget-change-with-jquerys-event-delegation)
+
+### JQuery originalEvent
+
+- 使用 JQuery 事件委派時可以透過 `event.originalEvent` 取得原生 JavaScript 事件物件如：
+
+```javascript
+this.panel.on('click', '[my-click]', (e) => {
+    console.log('target', e.target);
+    console.log('currentTarget', e.currentTarget);
+    console.log('originalEvent.target', e.originalEvent.target);
+    console.log('originalEvent.currentTarget', e.originalEvent.currentTarget);
+});
+```
+
+- 可以看到原生 JavaScript 事件 `currentTarget` 是綁定事件的元素 `this.panel`，而非按鈕本身
+
+![](02.png)
