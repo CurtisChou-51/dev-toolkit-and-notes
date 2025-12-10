@@ -58,3 +58,23 @@ Set-Cookie: SessionId=abc123; Secure; HttpOnly; SameSite=Strict
 ![](04.png)
 
 - 可以發現兩者的差異在於 `Sec-Fetch-Site`，直接輸入網址的值是 `none`，而 "前往" 功能的值是 `cross-site`
+
+## 如果必須使用 SameSite=Strict
+
+- 以 ASP.NET Core 的 Cookie 驗證來說，通常會配置一個 LoginPath，當使用者沒有登入時會被導向該路徑進行登入
+
+```csharp
+services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Login";
+});
+```
+
+- 此時會被導向 LoginPath 的狀況可能為：
+  - 使用者沒有登入
+  - 使用者有登入，瀏覽器已經有儲存 Cookie，但因請求沒有夾帶 Cookie（例如跨站進入）所以被判定為沒有登入
+
+- 讓 LoginPath 方法接受一個 `returnUrl` 的參數，並且返回一個頁面，讓瀏覽器載入該頁面後再對傳入的 `returnUrl` 進行導向（例如使用 Javascript），由於這個請求在站內透過瀏覽器發起，因此可以帶上 Cookie，此時可能狀況：
+  - 使用者沒有登入，導向 `returnUrl` 頁面後又會被導向回 LoginPath 形成迴圈，因此這邊需要特別處理導回 Login 頁面
+  - 使用者有登入，導向 `returnUrl` 頁面後成功帶上 Cookie，回到原本要訪問的頁面
+
