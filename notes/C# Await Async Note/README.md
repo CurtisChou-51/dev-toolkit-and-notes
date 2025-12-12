@@ -124,3 +124,44 @@ async Task DoWorkAsync()
 All tasks completed. Elapsed = 00:00:12.0775677
 All asyncTasks completed. Elapsed = 00:00:03.0261486
 ```
+
+## Avoid Async Void
+
+- 一般來說 `async void` 只能用在事件處理器中，其他情況應避免使用，原因是無法讓呼叫端捕捉例外，如果未處理的例外一路往外拋最後可能會導致網站程式掛掉。參考：[Avoid Async Void - Microsoft](https://learn.microsoft.com/zh-tw/archive/msdn-magazine/2013/march/async-await-best-practices-in-asynchronous-programming#avoid-async-void)
+
+```csharp
+try
+{
+    DoSomething();
+}
+catch (Exception ex)
+{
+    // 無法捕捉
+}
+
+async void DoSomething()
+{
+    await Task.Delay(100);
+    throw new Exception("Boom!");
+}
+```
+
+- 改為 `async Task` 後即可 `await` 捕捉例外：
+
+```csharp
+try
+{
+    await DoSomething();
+}
+catch (Exception ex)
+{
+    // 可以捕捉
+}
+
+async Task DoSomething()
+{
+    await Task.Delay(100);
+    throw new Exception("Boom!");
+}
+```
+
