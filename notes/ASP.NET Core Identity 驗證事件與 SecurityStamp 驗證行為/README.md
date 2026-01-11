@@ -21,13 +21,38 @@ builder.Services.ConfigureApplicationCookie(options => {
   - **Identity 原生的 SecurityStampValidator 失效**
   - 客製化的 `UserClaimsPrincipalFactory` 不被呼叫
 
-- 我透過了修改 `ValidationInterval`，並配置中斷點方便觀察。發現設置了 `OnValidatePrincipal` 之後，就不進入我客製化的 `UserClaimsPrincipalFactory`；但如果不設置 `OnValidatePrincipal`，則會依照 `ValidationInterval` 正常進入：
+## 如何快速觀察問題?
+
+- Identity 中 `SecurityStampValidator` 的驗證流程：
+```
+請求進入
+    ↓
+檢查是否超過 ValidationInterval
+    ↓
+如果超過，則觸發 SecurityStampValidator.ValidatePrincipalAsync
+    ↓
+從資料庫載入用戶資料（UserManager.FindByIdAsync）
+    ↓
+比對 Security Stamp
+    ↓
+如果匹配，則呼叫 SignInManager.CreateUserPrincipalAsync(user)
+    ↓
+內部呼叫 UserClaimsPrincipalFactory.CreateAsync(user)  ← 客製化的 `UserClaimsPrincipalFactory` 在這裡執行
+    ↓
+產生新的 Claims，更新 cookie 內容
+    ↓
+回應請求
+```
+
+- `ValidationInterval` 用於控制 `Security Stamp` 的驗證頻率：
 ```csharp
 builder.Services.Configure<SecurityStampValidatorOptions>(options =>
 {
     options.ValidationInterval = TimeSpan.FromSeconds(10);
 });
 ```
+
+- 我透過了修改 `ValidationInterval` 並在客製化的 `UserClaimsPrincipalFactory` 加入中斷點來觀察行為，結果發現設置了 `OnValidatePrincipal` 之後，就不進入我客製化的 `UserClaimsPrincipalFactory`；但如果不設置 `OnValidatePrincipal`，則會正常進入
 
 ---
 
