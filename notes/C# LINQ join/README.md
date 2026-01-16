@@ -30,3 +30,11 @@
  from o in userOrders.DefaultIfEmpty()
  select new { u.Name, Product = o?.Product ?? null })
 ```
+
+## 對照表
+| query syntax                                  | lambda                                         |
+| --------------------------------------------- | ---------------------------------------------- |
+| `from a in A from b in B`                     | `.SelectMany()`                                |
+| `join ... `                                   | `.Join()`                                      |
+| `join ... into`                               | `.GroupJoin()`                                 |
+| `join ... into ... from ... DefaultIfEmpty()` | `.GroupJoin().SelectMany(...DefaultIfEmpty())` |
