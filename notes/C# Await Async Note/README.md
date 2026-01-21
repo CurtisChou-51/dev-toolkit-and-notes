@@ -125,6 +125,12 @@ All tasks completed. Elapsed = 00:00:12.0775677
 All asyncTasks completed. Elapsed = 00:00:03.0261486
 ```
 
+| 特性            | DoWork (Thread.Sleep)       | DoWorkAsync (Task.Delay)       |
+|----------------|-----------------------------|--------------------------------|
+| 執行緒狀態       | 被阻斷，無法挪作他用           | 被釋放，可處理其他請求             |
+| 資源利用率       | 低，執行緒在閒置等待           | 高，少量執行緒可處理大量併發        |
+| 本範例耗時       | 約 12 秒 (100/30≈4 批)       | 約 3 秒 (幾乎同時完成)            |
+
 ## Avoid Async Void
 
 - 一般來說 `async void` 只能用在事件處理器中，其他情況應避免使用，原因是無法讓呼叫端捕捉例外，如果未處理的例外一路往外拋最後可能會導致網站程式掛掉。參考：[Avoid Async Void - Microsoft](https://learn.microsoft.com/zh-tw/archive/msdn-magazine/2013/march/async-await-best-practices-in-asynchronous-programming#avoid-async-void)
