@@ -47,6 +47,17 @@
 
 ## 其他補充
 
+### 工作管理員觀察
+
+1. 放置 app_offline.htm 前，`w3wp.exe` 正在執行中
+![](01.png)
+
+2. 剛放置 app_offline.htm，原 `w3wp.exe` 正在停止，並啟動新的 `w3wp.exe`
+![](02.png)
+
+3. 原 `w3wp.exe` 已消失，只剩新的 `w3wp.exe`
+![](03.png)
+
 ### Hosting Model 差異
 
 - [**In-Process Hosting**](https://learn.microsoft.com/zh-tw/aspnet/core/host-and-deploy/iis/in-process-hosting?view=aspnetcore-8.0)
