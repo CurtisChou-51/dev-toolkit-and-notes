@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36915.13 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorAppOutbox", "BlazorAppOutbox\BlazorAppOutbox.csproj", "{A9095F90-5FB2-4E40-9809-278525B66EDA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A9095F90-5FB2-4E40-9809-278525B66EDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9095F90-5FB2-4E40-9809-278525B66EDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9095F90-5FB2-4E40-9809-278525B66EDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9095F90-5FB2-4E40-9809-278525B66EDA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E43031A6-3F02-4009-BAE3-6E074FD1A396}
+	EndGlobalSection
+EndGlobal
