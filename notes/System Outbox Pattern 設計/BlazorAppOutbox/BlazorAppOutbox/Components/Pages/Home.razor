@@ -1,0 +1,173 @@
+﻿@page "/"
+@using Microsoft.EntityFrameworkCore
+@rendermode InteractiveServer
+
+@inject BlazorAppOutbox.AppDbContext DbContext
+
+<PageTitle>Order</PageTitle>
+
+<h1>Order</h1>
+
+<div class="mb-3">
+    <label>客戶名稱：</label>
+    <input @bind="customerName" class="form-control" />
+</div>
+<div class="mb-3">
+    <label>金額：</label>
+    <input type="number" @bind="totalAmount" class="form-control" />
+</div>
+<button class="btn btn-primary" @onclick="CreateOrder">建立訂單</button>
+
+@if (message is not null)
+{
+    <div class="alert alert-success mt-3">@message</div>
+}
+
+<hr />
+
+<h3>
+    訂單清單
+    <button class="btn btn-sm btn-outline-secondary ms-2" @onclick="RefreshOrders">
+        重新整理
+    </button>
+</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>訂單ID</th>
+            <th>客戶名稱</th>
+            <th>金額</th>
+            <th>建立時間</th>
+            <th>處理時間</th>
+            <th>處理狀態</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in orderViews)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.CustomerName</td>
+                <td>@item.TotalAmount</td>
+                <td>@item.OrderDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                <td>@item.ProcessedAt?.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                <td>
+                    @if (item.Status == 0)
+                    {
+                        <span class="text-warning">待處理</span>
+                    }
+                    else if (item.Status == 1)
+                    {
+                        <span class="text-success">完成</span>
+                    }
+                    else if (item.Status == 2)
+                    {
+                        <span class="text-secondary">待重試</span>
+                    }
+                    else
+                    {
+                        <span class="text-danger">失敗(不重試)</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private string? customerName;
+    private decimal totalAmount;
+    private string? message;
+    private List<OrderView> orderViews = new();
+
+    protected override void OnInitialized()
+    {
+        MockData();
+    }
+
+    private void RefreshOrders()
+    {
+        LoadOrders();
+        StateHasChanged();
+    }
+
+    private async Task CreateOrder()
+    {
+        // Transactions are not supported by the in-memory store
+        // using var trans = DbContext.Database.BeginTransaction();
+        try
+        {
+            var order = new BlazorAppOutbox.Order
+            {
+                CustomerName = customerName,
+                OrderDate = DateTime.Now,
+                TotalAmount = totalAmount
+            };
+            DbContext.Orders.Add(order);
+            await DbContext.SaveChangesAsync();
+
+            var outbox = new BlazorAppOutbox.Outbox
+            {
+                EventType = "OrderCreated",
+                Payload = System.Text.Json.JsonSerializer.Serialize(new
+                {
+                    order.Id,
+                    order.CustomerName,
+                    order.OrderDate,
+                    order.TotalAmount
+                }),
+                CreatedAt = DateTime.Now
+            };
+            DbContext.Outboxes.Add(outbox);
+            await DbContext.SaveChangesAsync();
+            // await trans.CommitAsync();
+
+            message = $"訂單已建立 (ID: {order.Id})";
+        }
+        catch (Exception ex)
+        {
+            // await trans.RollbackAsync();
+            message = $"建立訂單失敗: {ex.Message}";
+            return;
+        }
+
+        MockData();
+        LoadOrders();
+        StateHasChanged();
+    }
+
+    private void MockData()
+    {
+        var rnd = new Random();
+        customerName = $"測試客戶{rnd.Next(1, 1000)}";
+        totalAmount = rnd.Next(500, 5000);
+    }
+
+    private void LoadOrders()
+    {
+        var outboxes = DbContext.Outboxes
+            .AsNoTracking()
+            .Where(x => x.EventType == "OrderCreated")
+            .OrderByDescending(x => x.CreatedAt)
+            .ToList();
+
+        orderViews = outboxes.Select(x =>
+        {
+            string? payload = x.Payload;
+            var dto = System.Text.Json.JsonSerializer.Deserialize<OrderView>(payload!)!;
+            dto.Status = x.Status;
+            dto.ProcessedAt = x.ProcessedAt;
+            return dto;
+        }).ToList();
+    }
+
+    private class OrderView
+    {
+        public int Id { get; set; }
+        public string? CustomerName { get; set; }
+        public DateTime OrderDate { get; set; }
+        public DateTime? ProcessedAt { get; set; }
+        public decimal TotalAmount { get; set; }
+        public int Status { get; set; }
+    }
+}
