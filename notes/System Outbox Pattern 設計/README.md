@@ -91,6 +91,9 @@ private async Task ProcessOutboxEvents(CancellationToken ct)
 }
 ```
 
+### 範例專案 - BlazorAppOutbox
+[BlazorAppOutbox](BlazorAppOutbox)
+
 ## 常見場景
-對外 API 呼叫不可控、不穩定，不要求即時回應，但外部系統掛了也不能影響主要寫入流程
+常用於對外不可控、不穩定的 API 呼叫，並且不要求即時回應，但外部 API 掛了也不能影響主要寫入流程
   
