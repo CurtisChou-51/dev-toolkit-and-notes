@@ -77,7 +77,7 @@ foreach (var item in converter.YieldDatas())
 
 ## 範例
 - 範例專案：[ExcelConsoleApp](ExcelConsoleApp)
-- 主要類別：[AsposeSheetConverter.cs](ExcelConsoleApp/AsposeSheetConverter.cs)
+- 主要類別：[AsposeSheetConverter.cs](ExcelConsoleApp/ExcelConsoleApp/AsposeSheetConverter.cs)
 
 ## 注意事項
 1. Aspose.Cells 為商業授權套件，需自行取得授權
