@@ -30,3 +30,16 @@ var myModule = (function () {
     return myModule;
 }); 
 ```
+
+## Append CSS
+```javascript
+(() => {
+    const style = document.createElement('style');
+    style.id = 'debug-style';
+    style.textContent = `
+a:focus, button:focus, input:focus {
+  outline: 3px solid red !important;
+}`;
+    document.head.appendChild(style);
+})();
+```
