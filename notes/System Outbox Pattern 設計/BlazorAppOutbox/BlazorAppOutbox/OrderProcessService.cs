@@ -26,26 +26,35 @@ namespace BlazorAppOutbox
 
         private async Task SimulateProcessingAsync(Outbox outbox)
         {
+            var order = await _dbContext.Orders.FirstOrDefaultAsync(o => o.Id == outbox.ReferenceId);
+            if (order is null)
+            {
+                outbox.Status = 3;
+                outbox.ProcessedAt = DateTime.Now;
+                await _dbContext.SaveChangesAsync();
+                return;
+            }
+
             // 模擬處理資料
             await Task.Delay(2000);
             int chance = random.Next(100);
             if (chance < 60)
             {
                 // 60% 成功
-                outbox.Status = 1;
-                outbox.ProcessedAt = DateTime.Now;
+                order.Status = outbox.Status = 1;
+                order.ProcessedAt = outbox.ProcessedAt = DateTime.Now;
             }
             else if (chance < 90)
             {
                 // 30% 重試
-                outbox.Status = 2;
-                outbox.ProcessedAt = DateTime.Now;
+                order.Status = outbox.Status = 2;
+                order.ProcessedAt = outbox.ProcessedAt = DateTime.Now;
             }
             else
             {
                 // 10% 失敗不重試
-                outbox.Status = 3;
-                outbox.ProcessedAt = DateTime.Now;
+                order.Status = outbox.Status = 3;
+                order.ProcessedAt = outbox.ProcessedAt = DateTime.Now;
             }
 
             await _dbContext.SaveChangesAsync();
