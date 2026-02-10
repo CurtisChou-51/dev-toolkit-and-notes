@@ -20,6 +20,8 @@ namespace BlazorAppOutbox
         public string? CustomerName { get; set; }
         public DateTime OrderDate { get; set; }
         public decimal TotalAmount { get; set; }
+        public int Status { get; set; }
+        public DateTime? ProcessedAt { get; set; }
     }
 
     public class Outbox
@@ -27,6 +29,7 @@ namespace BlazorAppOutbox
         [Key]
         public int Id { get; set; }
         public string? EventType { get; set; }
+        public int ReferenceId { get; set; }
         public string? Payload { get; set; }
         public DateTime CreatedAt { get; set; }
         public int Status { get; set; }

@@ -108,6 +108,7 @@
 
             var outbox = new BlazorAppOutbox.Outbox
             {
+                ReferenceId = order.Id,
                 EventType = "OrderCreated",
                 Payload = System.Text.Json.JsonSerializer.Serialize(new
                 {
@@ -145,19 +146,14 @@
 
     private void LoadOrders()
     {
-        var outboxes = DbContext.Outboxes
-            .AsNoTracking()
-            .Where(x => x.EventType == "OrderCreated")
-            .OrderByDescending(x => x.CreatedAt)
-            .ToList();
-
-        orderViews = outboxes.Select(x =>
+        orderViews = DbContext.Orders.AsNoTracking().Select(x => new OrderView
         {
-            string? payload = x.Payload;
-            var dto = System.Text.Json.JsonSerializer.Deserialize<OrderView>(payload!)!;
-            dto.Status = x.Status;
-            dto.ProcessedAt = x.ProcessedAt;
-            return dto;
+            Id = x.Id,
+            CustomerName = x.CustomerName,
+            OrderDate = x.OrderDate,
+            ProcessedAt = x.ProcessedAt,
+            Status = x.Status,
+            TotalAmount = x.TotalAmount
         }).ToList();
     }
 
