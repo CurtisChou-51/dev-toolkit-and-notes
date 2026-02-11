@@ -3,7 +3,7 @@
 - System Outbox Pattern 設計
 
 ## 基本概念
-- Outbox Pattern 是一種**確保資料庫狀態與對外事件/API一致性**的設計
+- Outbox Pattern 是一種**確保資料庫狀態與對外事件/API一致性**的設計。嚴格意義上，Outbox Pattern 主要是針對 event publish 情境，但我想這樣的設計理念在不適合使用 DB Transaction 管理一致性的情境上也通用
 - 核心精神：
   - 至少一次可靠執行對外行為
   - 允許重送，但不允許遺失
