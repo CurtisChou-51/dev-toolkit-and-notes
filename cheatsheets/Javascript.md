@@ -1,5 +1,12 @@
 ﻿# Javascript
 
+## Template for Bookmarklet
+```javascript
+javascript:(function(){
+
+})()
+```
+
 ## Module Definition - IFEE
 ```javascript
 var myModule = (function () {
