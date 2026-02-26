@@ -1,6 +1,6 @@
-# Ckfinder Troubleshooting
+﻿# C# Ckfinder Troubleshooting
 
-- 問題背景：某系統移機後 CKEditor 上傳圖片時會顯示錯誤，並且沒有更多的相關錯誤訊息
+- 問題背景：ASP.NET 系統移機後 CKEditor 上傳圖片時會顯示錯誤，並且沒有更多的相關錯誤訊息
 
 ## 錯誤訊息
 
