@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>example</title>
+    <style>
+        .tabs-container {
+            font-family: sans-serif;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+
+        .tabs-menu {
+            display: flex;
+            gap: 10px;
+            margin-bottom: -1px;
+        }
+
+        .tab-link {
+            padding: 10px 20px;
+            text-decoration: none;
+            color: #555;
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .tabs-content {
+            border: 1px solid #ccc;
+            padding: 20px;
+            min-height: 150px;
+            position: relative;
+            background: white;
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+            .tab-pane:target {
+                display: block;
+                animation: fadeIn 0.5s ease;
+            }
+
+                .tab-pane:target h3 {
+                    color: #007bff;
+                    border-bottom: 2px solid #007bff;
+                    display: inline-block;
+                }
+
+        .tabs-content:has(.tab-pane:target) .placeholder {
+            display: none;
+        }
+
+        .tabs-container:has(#tab1:target) .tab-link[href="#tab1"],
+        .tabs-container:has(#tab2:target) .tab-link[href="#tab2"],
+        .tabs-container:has(#tab3:target) .tab-link[href="#tab3"] {
+            background: white;
+            color: #007bff;
+            border-bottom: 1px solid white;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="tabs-container">
+        <nav class="tabs-menu">
+            <a href="#tab1" class="tab-link">技術規格</a>
+            <a href="#tab2" class="tab-link">使用指南</a>
+            <a href="#tab3" class="tab-link">常見問題</a>
+        </nav>
+
+        <div class="tabs-content">
+            <div id="tab1" class="tab-pane">
+                <h3>技術規格</h3>
+                <p>- 處理器：高效能 8 核心</p>
+                <p>- 記憶體：16GB RAM</p>
+            </div>
+            <div id="tab2" class="tab-pane">
+                <h3>使用指南</h3>
+                <p>- 第一步：接通電源。</p>
+                <p>- 第二步：按下啟動按鈕。</p>
+            </div>
+            <div id="tab3" class="tab-pane">
+                <h3>常見問題</h3>
+                <p>- 問：保固多久？</p>
+                <p>- 答：我們提供兩年全球保固。</p>
+            </div>
+            <p class="placeholder">請選擇上方分頁查看詳細資訊。</p>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('hashchange', function () {
+            console.log(window.location.hash);
+        });
+    </script>
+</body>
+</html>
