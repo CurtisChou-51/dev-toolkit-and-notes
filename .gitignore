@@ -363,3 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 
 desktop.ini
+
+.vscode/
