@@ -54,9 +54,7 @@ Regex.Replace(input, @"[\p{Cc}\p{Cf}\p{Cn}\p{Co}]", "");
 
 ---
 
-## 字串比對與正規化陷阱 (ToLowerInvariant)
-
-在處理外部輸入資料字串時，除了過濾掉不可見的控制字元外，另一個常見的陷阱是**大小寫轉換的文化特性 (Culture)** 問題。
+## 字串大小寫轉換 (ToLower / ToLowerInvariant)
 
 在 C# 中，如果直接使用 `.ToLower()` 或 `.ToUpper()`，預設會依照**當前執行緒的語系文化 (Current Culture)** 進行轉換。這在某些語系下會產生非預期的結果：
 
@@ -65,9 +63,9 @@ Regex.Replace(input, @"[\p{Cc}\p{Cf}\p{Cn}\p{Co}]", "");
 
 ### 何時使用
 
-不是顯示給使用者的本地化內容，而需要統一文字大小寫的狀況如：
+當需要統一文字大小寫，且**不是顯示給使用者的本地化內容**，例如：
 - 程式邏輯判斷
-- 後端辨識碼轉換
+- 後端辨識碼轉換（如：用以產生 JWT 或是 Cache Key）
 - 建立不區分大小寫的雜湊
 
 建議使用 `ToLowerInvariant()` 或 `ToUpperInvariant()`
@@ -78,3 +76,39 @@ if (string.Equals(input, "admin", StringComparison.OrdinalIgnoreCase)) {
 
 }
 ```
+
+> [!NOTE]  
+> 尤其在分散式系統中更為重要，因為不同伺服器的語系可能不同。
+
+---
+
+## Unicode 字串正規化 (String.Normalize)
+
+另一個常見的字串預處理陷阱是**相同視覺字元卻有不同的 Unicode 編碼組合**。
+例如，帶有重音符號的字母（如 `é`）有兩種常見的 Unicode 表示方式：
+1. **單一合成字元 (Precomposed)**：直接使用單一字元 `é` (U+00E9)
+2. **組合字元 (Combining)**：使用基本字母 `e` (U+0065) 加上組合重音符號 `´` (U+0301)
+
+如果直接比對這兩種表示法的字串，即使視覺上完全相同，C# 程式也會判定為不相等（`==` 回傳 false），這在系統比對、搜尋或主鍵驗證時經常造成難以發現的問題。
+
+### Normalize 方法與正規化型式
+
+為了確保字串的一致性，可以使用 `String.Normalize()` 將字串轉換為明確定義的標準形式：
+
+- Form C (NFC, 預設)：規範相符合成 (Canonical Composition)。盡可能將組合字元合併為單一字元。這也是多數系統、網頁的標準建議表示法。
+- Form D (NFD)：規範相符分解 (Canonical Decomposition)。將字元拆解為基本字母與組合標記。
+- Form KC (NFKC) 與 Form KD (NFKD)：除了分解/合成外，還包含**相容性轉換 (Compatibility)**。會將視覺或語義相似的字元正規化，例如將全形字母轉為半形、上標/下標數字轉為一般數字、或是將 `①`、羅馬數字 `Ⅳ` 拆解轉換為標準對應字元。
+
+> [!NOTE]  
+> 預設的 `String.Normalize()` 採用 Form C，可以想像成將「組合字」壓扁成「單一字元」
+
+```csharp
+string s1 = "\u00E9";   // 'é' (Form C 格式)
+string s2 = "e\u0301";  // 'e' + '´' (Form D 格式)
+
+Console.WriteLine(s1 == s2); // False
+string normalizedS2 = s2.Normalize(NormalizationForm.FormC);
+Console.WriteLine(s1 == normalizedS2); // True
+```
+
+在我近期的專案中有使用 `NormalizationForm.FormKC` 來處理使用者輸入的地址資料，主要目的是將門牌號資訊中的全形字元轉為半形，以減少後續發送給第三方 API 時可能造成的問題。
