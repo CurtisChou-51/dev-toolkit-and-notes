@@ -98,7 +98,17 @@ Regex.Replace(input, @"[\p{Cc}\p{Cf}\p{Cn}\p{Co}]", "");
 - 後端辨識碼轉換（如：用以產生 JWT 或是 Cache Key）
 - 建立不區分大小寫的雜湊
 
-建議使用 `ToLowerInvariant()` 或 `ToUpperInvariant()`
+建議使用 `ToLowerInvariant()` 或 `ToUpperInvariant()`，會使用 .NET 內建的 Invariant Culture（固定文化規則）
+
+> [!NOTE]  
+> 尤其在分散式系統中更為重要，因為不同伺服器的語系可能不同。
+
+
+### IgnoreCase 字串比對
+
+1. `CurrentCultureIgnoreCase`：當前執行緒的語系文化
+2. `InvariantCultureIgnoreCase`：會使用固定文化規則
+3. `OrdinalIgnoreCase`：直接比較字元的二進位數值，忽略語言文化規則，此時大小寫判斷是基於 Unicode 規範的轉換
 
 ```csharp
 // 若是為了單純判斷相等，直接使用 StringComparison 效能更好（不產生額外字串配置）
@@ -107,8 +117,13 @@ if (string.Equals(input, "admin", StringComparison.OrdinalIgnoreCase)) {
 }
 ```
 
-> [!NOTE]  
-> 尤其在分散式系統中更為重要，因為不同伺服器的語系可能不同。
+ `InvariantCulture` 仍帶有語言語義知識（檢查字元組合）；`Ordinal` 是純粹的數值轉換（查表 -> 比對），效能又更好
+```csharp
+string s1 = "å";
+string s2 = "a\u030A";
+string.Equals(s1, s2, StringComparison.InvariantCultureIgnoreCase)  // True
+string.Equals(s1, s2, StringComparison.OrdinalIgnoreCase)  // False
+```
 
 ---
 
