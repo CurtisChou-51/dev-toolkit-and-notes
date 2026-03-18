@@ -24,3 +24,10 @@ cd /d "%~dp0"
 setx NUGET_HTTP_CACHE_PATH "D:\.nuget\v3-cache"
 setx NUGET_PACKAGES "D:\.nuget\packages"
 ```
+
+### npm
+- 修改 npm 快取路徑和套件路徑
+```
+npm config set prefix "D:\_npm"
+npm config set cache "D:\_npm_cache"
+```
