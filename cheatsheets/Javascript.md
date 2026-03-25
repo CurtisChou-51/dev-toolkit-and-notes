@@ -50,3 +50,10 @@ a:focus, button:focus, input:focus {
     document.head.appendChild(style);
 })();
 ```
+
+## JSON Data Islands
+```
+<script id="myData" type="application/json"></script>
+
+const data = JSON.parse(document.getElementById('myData').textContent);
+```
