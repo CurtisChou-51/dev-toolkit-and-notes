@@ -57,3 +57,15 @@ a:focus, button:focus, input:focus {
 
 const data = JSON.parse(document.getElementById('myData').textContent);
 ```
+
+
+## Sum
+```javascript
+const data = [
+  { product: "a", value: 450 },
+  { product: "b", value: 120 },
+  { product: "c", value: 1200 }
+];
+
+data.reduce((acc, x) => acc + x.value, 0);
+```
