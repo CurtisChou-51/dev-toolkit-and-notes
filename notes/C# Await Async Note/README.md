@@ -181,3 +181,15 @@ async Task DoSomething()
 
 ### 執行總時間
 如果系統有多核心 CPU 且資源充足，將工作拆分並透過多個 `Task` 平行派發，確實能利用多核心平行運算的優勢來縮短總執行時間；但如果 CPU 已經滿載或不足，發起過多的 Task 反而會因為執行緒頻繁切換（Context Switch）產生額外損耗，拖慢整體效能。
+
+
+## GetAwaiter() 與 .Result / .Wait() 的細節差異
+
+雖然 `await` 是處理非同步的首選方式，但有時在無法使用 `async` 的情境下會看到 `GetAwaiter().GetResult()`
+
+最主要的差別在於**錯誤處理的直覺性**：
+- `.Result`：如果發生錯誤會拋出 `AggregateException`。在 `catch` 時必須處理包裝後的例外，會讓程式碼變得冗長（例如：`ex.InnerException.Message`）。
+- `.GetAwaiter().GetResult()`：會「解包」錯誤，直接拋出那條原始例外（與 `await` 抓到的錯誤一模一樣），讓程式碼較為簡潔。
+
+> [!NOTE]  
+> `await task` 在底層實作上使用了 `GetAwaiter()` 機制，因此可以捕捉到原始例外
