@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PieChart + Datalabels</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <style>
+        .chart-container {
+            width: 500px;
+            margin: 50px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <canvas id="chart"></canvas>
+    </div>
+
+    <script>
+        Chart.register(ChartDataLabels);
+        const data = {
+            labels: ['A', 'B', 'C'],
+            datasets: [{
+                label: '任務狀態',
+                data: [220, 1, 2],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.8)',
+                    'rgba(54, 162, 235, 0.8)',
+                    'rgba(255, 206, 86, 0.8)'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        const config = {
+            type: 'pie',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    datalabels: {
+                        display: 'auto',  /* 重疊時自動隱藏 */
+                        color: '#000',
+                        font: {
+                            weight: 'bold',
+                            size: 14
+                        },
+                        formatter: function (value, context) {
+                            const dataset = context.chart.data.datasets[0];
+                            const total = dataset.data.reduce((acc, curr) => acc + curr, 0);
+                            const percentage = ((value / total) * 100).toFixed(1) + '%';
+                            return value + ' (' + percentage + ')';
+                        }
+                    }
+                }
+            }
+        };
+
+        new Chart(document.getElementById('chart'), config);
+    </script>
+</body>
+</html>
