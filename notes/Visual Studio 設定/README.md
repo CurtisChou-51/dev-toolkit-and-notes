@@ -135,3 +135,18 @@ body: Use markdown to describe the changes in bullet points, each starting with 
 - `工具 > 選項 > 專案和方案 > 建置和執行`，調整為 `詳細` 或 `診斷`，可以看到更詳細的建置訊息
 
 ![](建置/01.png)
+
+## 比對工具
+
+- Visual Studio 比對工具 `vsDiffMerge.exe` 可以用來比對兩個檔案的差異，使用 bat 啟動範例：
+
+```bash
+"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\vsDiffMerge.exe" "file1.txt" "file2.txt"
+```
+
+![](比對工具/01.png)
+
+- 如果找不到 `vsDiffMerge.exe` 可以用以下指令協助尋找：
+```bash
+where /R "C:\Program Files\Microsoft Visual Studio" vsdiffmerge.exe
+```
