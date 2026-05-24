@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML Table Layout Demo</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        p.desc { color: #555; margin-top: 0; }
+        .box {
+            width: 350px;
+            border: 2px dashed #ff4d4d;
+            padding: 10px;
+            margin-bottom: 30px;
+        }
+        .box table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .box th, .box td {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <h3>1. 原始：長字串撐開 table（破版）</h3>
+    <p class="desc">外層 box 設 350px，但長字串把整張表撐到溢出紅框</p>
+    <div class="box">
+        <table>
+            <thead>
+                <tr><th>A</th><th>B</th><th>C</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</td>
+                    <td>內容BBBBBBBBBBBBB</td>
+                    <td>2025-01-01</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h3>2. word-break: break-all</h3>
+    <p class="desc">cell 允許在任何字元斷行，table 不再被撐開（欄寬仍由內容自動分配）</p>
+    <div class="box">
+        <table>
+            <thead>
+                <tr><th>A</th><th>B</th><th>C</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="word-break: break-all;">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</td>
+                    <td style="word-break: break-all;">內容BBBBBBBBBBBBB</td>
+                    <td style="word-break: break-all;">2025-01-01</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h3>3. ellipsis</h3>
+    <p class="desc">text-overflow: ellipsis 過長內容自動切為「…」</p>
+    <div class="box">
+        <table style="table-layout: fixed;">
+            <thead>
+                <tr><th>A</th><th>B</th><th>C</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</td>
+                    <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">內容BBBBBBBBBBBBB</td>
+                    <td style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">2025-01-01</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h3>4. 綜合版：line-clamp 3 列截斷 + 日期欄不換行</h3>
+    <p class="desc">A 欄長字串用 div + -webkit-line-clamp 限制最多 3 列、超出顯示「…」；C 欄日期用 nowrap 確保完整顯示；外層 table 用 fixed + colgroup 控制欄寬</p>
+    <div class="box">
+        <table>
+            <thead>
+                <tr><th>A</th><th>B</th><th>C</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div style="display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; word-break:break-all;">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</div>
+                    </td>
+                    <td style="word-break:break-all;">內容BBBBBBBBBBBBB</td>
+                    <td style="white-space:nowrap;">2025-01-01</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
