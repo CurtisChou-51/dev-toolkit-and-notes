@@ -15,6 +15,10 @@
 - WSL2 需要開啟 **Windows 功能** 中的 **Virtual Machine Platform** 與 **Windows Subsystem for Linux**：
 ![](安裝/03.png)
 
+### WSL 虛擬硬碟路徑
+- WSL 虛擬硬碟的存放路徑預設在 `C:\Users\{username}\AppData\Local\Docker` 內，如果 C 槽空間不足可以考慮將此資料夾移動到其他磁碟
+![](setting/01.png)
+
 ## welcome-to-docker 範例
 
 - 在 [Docker Github](https://github.com/docker/welcome-to-docker) 下載範例 repository `welcome-to-docker`
