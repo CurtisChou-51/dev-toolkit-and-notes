@@ -62,10 +62,9 @@ Finalizer Queue:
     -> 000001cbaa234e88 System.Byte[]
 ```
 
-- 分析 dump 檔，發現 `System.Byte[]` 佔據了大量的記憶體，之後使用 `gcroot` 追蹤，發現大量的 `System.Net` 命名空間下的物件，並且都在 Finalizer Queue
-
-- 判斷可能因是該系統的 HttpClient 以及 HttpResponseMessage 等相關物件皆沒有被正確 Dispose，導致物件被送入 Finalizer Queue 等待被 GC 回收
+- 分析 dump 檔，發現 `System.Byte[]` 佔據了大量的記憶體，之後使用 `gcroot` 追蹤，發現大量的 `System.Net` 命名空間下的物件，並且都在 Finalizer Queue，判斷可能因是該系統的 HttpClient 以及 HttpResponseMessage 等相關物件皆沒有被正確 Dispose，導致物件被送入 Finalizer Queue 等待被 GC 回收
 
 > [!NOTE]
-> Dispose 內除了釋放資源之外，還會會呼叫 GC.SuppressFinalize(this);
-> 這會告訴 GC：「這個物件的資源已經釋放，把它的解構子註銷掉，不需要去解構子佇列排隊」
+> Dispose 內除了釋放資源之外，還會會呼叫 GC.SuppressFinalize(this);  
+> 這會告訴 GC：「這個物件的資源已經釋放，把它的解構子註銷掉，不需要去解構子佇列排隊」  
+> 以避免使用 Finalizer 造成較高的效能開銷
