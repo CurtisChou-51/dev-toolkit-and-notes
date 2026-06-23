@@ -1,0 +1,40 @@
+# dumpheap
+
+列出記憶體使用狀況
+
+```
+!dumpheap -stat
+
+00007ffbb3f33300    94897      8382008 System.Int32[]
+00007ffbb510d9e8      126      8475600 System.Decimal[]
+00007ffbb2eeaf98   136445      8732480 System.Net.AsyncProtocolRequest
+00007ffbafa61688   102690      9858240 System.Data.DataRow
+00007ffbb3f30c48   148078     12278232 System.Object[]
+00007ffbb2ee9dd0    68323     12571432 System.Net.Sockets.OverlappedAsyncResult
+00007ffbb2eea898   136431     13097376 System.Net.BufferAsyncResult
+00007ffbb5131570    64849     18676512 System.Collections.Generic.Dictionary`2+Entry[[System.Type, mscorlib],[System.AttributeUsageAttribute, mscorlib]][]
+00007ffbb3f315a8    24551     22586628 System.Char[]
+00007ffbb3f307a0   370981     34668350 System.String
+000001c2a95f74c0    40721    440449874      Free
+00007ffbb3f35848    72003   2985899727 System.Byte[]
+
+
+!dumpheap -mt 00007ffbb3f35848 -min 1000000
+
+         Address               MT     Size
+000001cbaa234e88 00007ffbb3f35848 203294953     
+000001cbea246b80 00007ffbb3f35848 147122582     
+000001ce08971020 00007ffbb3f35848 297356620     
+000001cbfa1e1038 00007ffbb3f35848 241764109     
+000001cc1a203750 00007ffbb3f35848 54228895     
+000001ced3ef1020 00007ffbb3f35848 297356620     
+000001ceb3ef1020 00007ffbb3f35848 297356620     
+000001cc6a2c8350 00007ffbb3f35848 117888810     
+000001cc71435ad8 00007ffbb3f35848 147122582     
+000001cc7a26ea58 00007ffbb3f35848 42245985     
+000001cc7cbb8a18 00007ffbb3f35848 147122582     
+000001cc9a1e1038 00007ffbb3f35848 147122582     
+000001ce5ca01020 00007ffbb3f35848 297356620     
+000001ccea1e1038 00007ffbb3f35848 231811961     
+000001ccfa25cf48 00007ffbb3f35848 231811961   
+```

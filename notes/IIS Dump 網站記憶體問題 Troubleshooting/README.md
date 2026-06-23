@@ -68,3 +68,11 @@ Finalizer Queue:
 > Dispose 內除了釋放資源之外，還會會呼叫 GC.SuppressFinalize(this);  
 > 這會告訴 GC：「這個物件的資源已經釋放，把它的解構子註銷掉，不需要去解構子佇列排隊」  
 > 以避免使用 Finalizer 造成較高的效能開銷
+
+- 雖然 HttpResponseMessage 本身沒有沒有實作解構子，但實作上衍生的 ConnectStream 等等底層的連線控制仍有實作解構子，因此若無正確 Dispose 確實會增加 GC 壓力
+
+## 解決方案
+- 將 HttpResponseMessage 正確 Dispose、HttpClient 透過 IHttpClientFactory 取得
+
+## 補充說明
+- 過程中還有發現 `XXX.BizLayer.*` 這個命名空間下的一些 DTO 類型物件竟然也出現在 Finalizer Queue，追溯 source code 發現雖沒有自行實作解構子卻繼承了 `System.ComponentModel.Component`，可能是由早期的專案遺留下來的設計
