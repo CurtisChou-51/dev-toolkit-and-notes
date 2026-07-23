@@ -155,6 +155,8 @@ Handles:
 - `System.AppDomain` 的數量也異常，網站是 .NET framework 4.x，找了一些資料後發現可能是 LocalReport 未釋放造成
 
 ## 解決方案
-
+- LocalReport 物件需要正確 `Dispose` (原先只有對 ReportViewer 物件做 `Dispose`，看起來還不夠)，再加上 `ReleaseSandboxAppDomain` 確保 AppDomain 被釋放
 
 ## 補充說明
+- LocalReport 最常見的欄位運算式 (如：`=Fields!Amount.Value`)，即使不使用到 Code 或是自訂 Assembly 也需要進行運算式編譯，因此舊版 ReportViewer 使用 AppDomain 作為運算式編譯的隔離環境
+- 新版的 LocalReport 改為使用 Roslyn 編譯器，並且不再使用 AppDomain 來隔離運算式編譯
