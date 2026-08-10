@@ -47,3 +47,39 @@ foreach (var match in aho.Search(fullContent))
 
 - 讀取資料：程式啟動後由資料庫讀取上市公司資料，包含名稱、產業別、股票代號等等，讀取出來後使用名稱作為 pattern 建立 Aho-Corasick 結構，之後比對都重複使用同一份(保留實體在記憶體中)
 
+- 反查索引：Aho-Corasick 只會回傳命中了哪些字串，不包含該公司的股票代號、產業別等欄位。因此在建立 pattern 的同時，用同一份資料另建一份「名稱 → 完整資料」的 Lookup，命中後再由名稱反查
+
+- 使用 `ILookup`：同一個公司名稱可能對應多筆資料，例如同時使用全名與別名比對的情境，`ILookup` 天然支援一對多且查無 key 時回傳空序列不必額外判斷
+
+
+```csharp
+private AhoCorasick _aho;
+private ILookup<string, CompanyItem> _companyLookup;
+
+private async Task EnsureAhoLoaded()
+{
+    if (_aho != null) return;
+
+    List<CompanyItem> companies = await _db.GetCompanies();
+
+    var aho = new AhoCorasick();
+    foreach (CompanyItem item in companies)
+        aho.Insert(item.Name);   // pattern 只放名稱
+
+    // 同一份資料另建反查索引
+    _companyLookup = companies.ToLookup(x => x.Name);
+    _aho = aho;
+}
+
+public async Task<List<CompanyItem>> MatchFullContent(string fullContent)
+{
+    await EnsureAhoLoaded();
+
+    var result = new List<CompanyItem>();
+    foreach (string name in _aho.SearchDistinct(fullContent))
+        result.AddRange(_companyLookup[name]);   // 由命中的名稱反查完整資料
+
+    return result;
+}
+```
+
