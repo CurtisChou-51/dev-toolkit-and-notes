@@ -11,8 +11,7 @@ System.Runtime.InteropServices.COMException (0x80040154): 擷取元件 (CLSID �
 ## 安裝錯誤
 
 ![](01.png)
-- 執行 `regsvr32 ThirdPartyCom.dll` → 「找不到指定的模組」
-- DLL 檔案確實存在於目錄中，但仍然失敗
+- 執行 `regsvr32 ThirdPartyCom.dll` → 「找不到指定的模組」，DLL 檔案確實存在於目錄中，但仍然失敗
 
 ## 初步推測原因
 
@@ -27,9 +26,6 @@ if ($machine -eq 0x14c) { "32-bit (x86)" } elseif ($machine -eq 0x8664) { "64-bi
 ```
 
 - 結果：`32-bit (x86)` → 改用 `C:\Windows\SysWOW64\regsvr32.exe` 來註冊
-
-> [!NOTE]  
-> `regsvr32` 回報「找不到指定的模組」不一定是目標 DLL 本身找不到，可能是它的相依 DLL 缺失
 
 ## 改用 32-bit regsvr32 仍然失敗
 
@@ -54,7 +50,10 @@ public class NL {
 }
 ```
 
-- 結果：`Error 126 : The specified module could not be found`，代表相依 DLL 缺失，不是 ThirdPartyCom.dll 本身找不到
+- 結果：`Error 126 : The specified module could not be found`，代表相依 DLL 缺失
+
+> [!NOTE]  
+> `regsvr32` 回報「找不到指定的模組」不一定是目標 DLL 本身找不到，可能是它的相依 DLL 缺失
 
 ## 找出缺失的相依 DLL
 
@@ -104,7 +103,9 @@ Test-Path "C:\Windows\System32\MSVCR100.dll"   # True → 只有 64-bit 版
 ## 修正：安裝正確架構的 VC++ Runtime
 
 - 下載並安裝 `Visual C++ 2010 Redistributable (x86)`（Microsoft 下載中心搜尋 `vcredist_x86.exe 2010`）
-- 安裝後 `C:\Windows\SysWOW64\MSVCR100.dll` 出現，重新執行 regsvr32 即正常
+- 安裝後 `C:\Windows\SysWOW64\MSVCR100.dll` 出現，再次執行 `Test-Path` 指令也會回傳 `True`，重新執行 regsvr32 即正常
+
+![](02.png)
 
 ## IIS 中呼叫 COM 元件失敗
 
