@@ -77,11 +77,6 @@ Controller.SendMail(sales)
 
 原本擠在同一個 `if/else` 裡的兩種標題規則，成為兩個類別各自的 `buildMailTitle`。要改哪一邊就只會動到那一邊，不必再確認另一邊會不會被波及。
 
-### 後續
-
-之後需求要把業務部再分成一部與二部。部門資訊已經是資料而不是分支，只要 Fetch 端多帶一組 `DeptName` / `DeptCode` 即可
-
-
 ## Before
 
 ```csharp
@@ -302,10 +297,6 @@ public static void TrySendMail(SendMailUserInfo userInfo, NotificationResult dat
 }
 ```
 
-## 注意事項
+### 後續
 
-- **`MailTitle` 改為必填**：標題從「寄信時現算」變成「Fetch 時預先組好」，若某條新增路徑忘了填，信會以空標題寄出。因此寄信實作進來先擋 —— 判斷從 `if/else` 變成資料欄位後，漏填的錯誤會從編譯期移到執行期
-
-- **`DeptCode` 是去重檔名的一部分**：值一旦改動，舊去重檔就比對不到，已推播過的內容會重推一輪。欄位註解要寫清楚，不能當成一般顯示字串隨意調整
-
-- **偵錯輸出仍需區分部門**：改為自行由 `DeptCode.StartsWith("Sales")` 推導，不由呼叫端傳入。旗標移除不代表「沒人需要知道部門」，而是「需要知道的人自己從資料推導」
+後續需求要把業務部再分成一部與二部。經過重構後部門資訊已經是資料而不是分支，只要 Fetch 端多帶一組 `DeptName` / `DeptCode` 即可；即使一部與二部差異更大也可以直接拆成三個類別，不需要再加入更多旗標參數判斷
