@@ -131,7 +131,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const saturate = saturateInput.valueAsNumber;
         const lightness = lightnessInput.valueAsNumber;
         for (let i = 0; i < data.length; i += 4) {
-            let hsl = converter.RGBtoHSL(new RGB(data[i], data[i + 1], data[i + 2]));
+            if (data[i + 3] === 0)
+                continue; // 透明跳過
+            const hsl = converter.RGBtoHSL(new RGB(data[i], data[i + 1], data[i + 2]));
+            if (hsl.s < 5)
+                continue; // 灰階不處理
+
             hsl.h = (hsl.h + hueRotate + 360) % 360;
             hsl.s = hsl.s * saturate;
             hsl.s = hsl.s > 100 ? 100 : hsl.s;
