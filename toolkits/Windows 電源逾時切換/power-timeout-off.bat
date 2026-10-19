@@ -13,10 +13,11 @@ powercfg /change standby-timeout-dc 0 || goto :failed
 echo Disabling secure screen saver ...
 echo.
 
-reg add "HKCU\Control Panel\Desktop" /v ScreenSaveActive /t REG_SZ /d 0 /f >nul || goto :failed
+reg add "HKCU\Control Panel\Desktop" /v ScreenSaveActive    /t REG_SZ /d 0 /f >nul || goto :failed
+reg add "HKCU\Control Panel\Desktop" /v ScreenSaverIsSecure /t REG_SZ /d 0 /f >nul || goto :failed
 
-REM reg alone only takes effect after re-login; SPI_SETSCREENSAVEACTIVE applies it to the running session.
-powershell -NoProfile -Command "$q=[char]34; Add-Type -Namespace Spi -Name N -MemberDefinition ('[DllImport('+$q+'user32.dll'+$q+', SetLastError=true)] public static extern bool SystemParametersInfo(uint a, uint b, System.IntPtr c, uint d);'); [void][Spi.N]::SystemParametersInfo(17,0,[System.IntPtr]::Zero,3)" || goto :failed
+REM reg alone only takes effect after re-login; SPI_SETSCREENSAVEACTIVE / SPI_SETSCREENSAVESECURE apply it to the running session.
+powershell -NoProfile -Command "$q=[char]34; Add-Type -Namespace Spi -Name N -MemberDefinition ('[DllImport('+$q+'user32.dll'+$q+', SetLastError=true)] public static extern bool SystemParametersInfo(uint a, uint b, System.IntPtr c, uint d);'); [void][Spi.N]::SystemParametersInfo(17,0,[System.IntPtr]::Zero,3); [void][Spi.N]::SystemParametersInfo(119,0,[System.IntPtr]::Zero,3)" || goto :failed
 
 echo   Plugged in    display: never   sleep: never
 echo   On battery    display: never   sleep: never
