@@ -86,8 +86,8 @@ _dbContext.SaveChanges();
 
 ### 指令
 
-- 新增 Migration: 修改了資料模型(新增、刪除或修改資料表、欄位等)之後使用，會在專案中生成一個新的 Migration 檔案，裡面包含了這次變更的描述
-- 套用 Migration: 根據 Migration 檔案中的指令更新資料庫結構
+- 新增 Migration：修改了資料模型(新增、刪除或修改資料表、欄位等)之後使用，會在專案中生成一個新的 Migration 檔案，裡面包含了這次變更的描述
+- 套用 Migration：根據 Migration 檔案中的指令更新資料庫結構
 
 ### 自行調整 Migration
 

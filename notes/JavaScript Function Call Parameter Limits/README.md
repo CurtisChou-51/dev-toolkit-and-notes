@@ -1,8 +1,8 @@
-# JavaScript Function Call Parameter Limits
+ï»¿# JavaScript Function Call Parameter Limits
 
-- JavaScript ¤ŞÀº¹ï¨ç¼Æ°Ñ¼Æ¦³¼Æ¶q­­¨î¡A¨Ï¥Î®i¶}¹Bºâ²Å®É»İ­nª`·N
+- JavaScript å¼•æ“å°å‡½æ•¸åƒæ•¸æœ‰æ•¸é‡é™åˆ¶ï¼Œä½¿ç”¨å±•é–‹é‹ç®—ç¬¦æ™‚éœ€è¦æ³¨æ„
 
-- ¨Ò¦p¨Ï¥Î®i¶}¹Bºâ²Å§@¬°¶Ç¤J `Math.max` °Ñ¼Æ¡A°Ñ¼Æ¹L¦h®É·|¾É­P `Maximum call stack size exceeded` ¿ù»~¡G
+- ä¾‹å¦‚ä½¿ç”¨å±•é–‹é‹ç®—ç¬¦ä½œç‚ºå‚³å…¥ `Math.max` åƒæ•¸ï¼Œåƒæ•¸éå¤šæ™‚æœƒå°è‡´ `Maximum call stack size exceeded` éŒ¯èª¤ï¼š
 ![](01.png)  
 
 ```javascript
@@ -10,11 +10,11 @@ const arr = Array(150000).fill(1);
 Math.max(...arr);
 ```
 
--  `Maximum call stack size exceeded` «üªº¬O¨ç¼Æ½Õ¥Î°ïÅ|ªº¤j¤p¶W¹L¤F­­¨î¡A°£¤F¦b¤j¶q»¼°j©I¥s¡A¶Ç¤J°Ñ¼Æ¹L¦h®É¤]·|¾É­P³o­Ó¿ù»~
+-  `Maximum call stack size exceeded` æŒ‡çš„æ˜¯å‡½æ•¸èª¿ç”¨å †ç–Šçš„å¤§å°è¶…éäº†é™åˆ¶ï¼Œé™¤äº†åœ¨å¤§é‡éè¿´å‘¼å«ï¼Œå‚³å…¥åƒæ•¸éå¤šæ™‚ä¹Ÿæœƒå°è‡´é€™å€‹éŒ¯èª¤
 
-## ­×§ï¤èªk
+## ä¿®æ”¹æ–¹æ³•
 
-- ¨Ï¥Î `reduce`
+- ä½¿ç”¨ `reduce`
 
 ```javascript
 const arr = Array(150000).fill(1);

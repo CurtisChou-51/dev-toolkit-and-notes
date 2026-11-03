@@ -5,9 +5,9 @@
 ## 重構描述
 
 - 拆分為小方法，使主流程更專注於高層處理：
-  - `CopyLREncwav`: 檢查並複製未處理檔案到本地，並回傳檔案的 `FileInfo`
-  - `EncwavToMonoWav`: 處理檔案的解密及格式轉換，並回傳檔案的 `FileInfo`
-  - `MergeTwoWavFiles`: 合併左聲道與右聲道檔案
+  - `CopyLREncwav`：檢查並複製未處理檔案到本地，並回傳檔案的 `FileInfo`
+  - `EncwavToMonoWav`：處理檔案的解密及格式轉換，並回傳檔案的 `FileInfo`
+  - `MergeTwoWavFiles`：合併左聲道與右聲道檔案
 
 - 資料流調整，更明確的相依關係，由程式結構反映出操作之間的邏輯：
   - 原為複製檔案結束後使用 `GetFiles("*.encwav")` 再手動替換副檔名來操作 `wavFiles`。**如此依賴於先前複製檔案的操作，此為隱含的相依性，需要仔細追蹤流程才能理解為什麼這裡要掃描檔案，還要推斷掃描結果應該包含什麼**
