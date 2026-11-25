@@ -1,0 +1,206 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Textarea 自動高度卡頓模擬</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, "Microsoft JhengHei", sans-serif;
+            background: #f4f5f7;
+            color: #222;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+            padding: 12px 16px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+            header label {
+                font-size: 14px;
+                display: flex;
+                align-items: center;
+                gap: 4px;
+            }
+
+        select, button {
+            padding: 6px 10px;
+            font-size: 14px;
+        }
+
+            button.primary {
+                background: #3b6ef5;
+                color: #fff;
+                border: 0;
+                border-radius: 4px;
+            }
+
+        #stats {
+            font-size: 14px;
+            color: #666;
+        }
+
+            #stats b {
+                color: #c00;
+            }
+
+        #heartbeat {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #3b6ef5;
+        }
+
+        .list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 12px;
+            padding: 16px;
+        }
+
+        .field {
+            background: #fff;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 1px 4px rgba(0,0,0,.1);
+        }
+
+            .field label {
+                display: block;
+                font-size: 12px;
+                color: #666;
+                margin-bottom: 4px;
+            }
+
+        textarea {
+            width: 100%;
+            height: 40px;
+            padding: 6px 8px;
+            font: 14px/1.6 inherit;
+            resize: none;
+            overflow: hidden;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div id="heartbeat" title="JS 心跳：停住代表主執行緒被卡住"></div>
+        <label>
+            數量
+            <select id="count">
+                <option>200</option>
+                <option selected>500</option>
+                <option>1000</option>
+                <option>2000</option>
+            </select>
+        </label>
+        <button id="regen">重新產生</button>
+        <button id="naive" class="primary">① 逐一調整</button>
+        <button id="batch" class="primary">② 批次調整</button>
+        <button id="reset">重設為固定高度</button>
+        <div id="stats"></div>
+    </header>
+
+    <div id="list" class="list"></div>
+
+    <script>
+        const $ = s => document.querySelector(s);
+        const list = $('#list'), stats = $('#stats');
+
+        /* ---------- 心跳：rAF 驅動，主執行緒卡住就停 ---------- */
+        (function beat(t) {
+            $('#heartbeat').style.transform = `scale(${0.6 + 0.4 * Math.abs(Math.sin(t / 200))})`;
+            requestAnimationFrame(beat);
+        })(0);
+
+        /* ---------- 產生長短不一的文字 ---------- */
+        const SENTENCES = [
+            '今天的會議討論了下一季的規劃。',
+            '客戶希望在月底前看到第一版。',
+            '這部分需要再和設計確認細節。',
+            '測試環境已經更新到最新版本。',
+            '請記得在週五前提交報告。',
+            '這是一段比較長的備註文字，用來讓不同的欄位有不同的高度，模擬實際表單中使用者輸入的內容。',
+        ];
+        function randomText() {
+            const n = 1 + Math.floor(Math.random() ** 2 * 20);   // 多數短、少數很長
+            let s = '';
+            for (let i = 0; i < n; i++) {
+                s += SENTENCES[Math.floor(Math.random() * SENTENCES.length)];
+                if (Math.random() < 0.2)
+                    s += '\n';
+            }
+            return s;
+        }
+
+        function render() {
+            const n = +$('#count').value;
+            list.innerHTML = Array.from({ length: n }, (_, i) =>
+                `<div class="field"><label>備註 #${i + 1}</label><textarea></textarea></div>`
+            ).join('');
+            // 用 .value 填入文字，避免 HTML 跳脫問題
+            list.querySelectorAll('textarea').forEach(ta => ta.value = randomText());
+            stats.textContent = `已產生 ${n} 個 textarea（高度固定 40px，文字被截掉）`;
+        }
+
+        /* ---------- ① 逐一調整：每個 textarea 都「寫 → 讀 → 寫」 ---------- */
+        function autosize(ta) {
+            ta.style.height = 'auto';                  // 寫：先縮回，否則 scrollHeight 只會變大
+            ta.style.height = ta.scrollHeight + 'px';  // 讀 scrollHeight（強制重排）→ 寫
+        }
+        function naive(tas) {
+            tas.forEach(autosize);                     // 第 k 次讀取都要面對前一圈留下的 dirty 版面
+        }
+
+        /* ---------- ② 批次調整：全部寫 → 全部讀 → 全部寫 ---------- */
+        function batch(tas) {
+            tas.forEach(ta => ta.style.height = 'auto');           // 1. 全部寫
+            const heights = tas.map(ta => ta.scrollHeight);        // 2. 全部讀：只有第一次讀會觸發重排
+            tas.forEach((ta, i) => ta.style.height = heights[i] + 'px'); // 3. 全部寫：等渲染階段一次算
+        }
+
+        /* ---------- 量測 ---------- */
+        function measure(name, fn) {
+            const tas = [...list.querySelectorAll('textarea')];
+            const t0 = performance.now();
+            fn(tas);
+            const tJs = performance.now() - t0;
+            requestAnimationFrame(() => setTimeout(() => {
+                const total = performance.now() - t0;
+                stats.innerHTML = `${name}｜${tas.length} 個｜JS <b>${tJs.toFixed(0)} ms</b>｜到畫面更新 <b>${total.toFixed(0)} ms</b>`;
+                console.log(`[${name}] n=${tas.length} js=${tJs.toFixed(1)}ms total=${total.toFixed(1)}ms`);
+            }));
+        }
+
+        $('#naive').addEventListener('click', () => measure('① 逐一調整', naive));
+        $('#batch').addEventListener('click', () => measure('② 批次調整', batch));
+        $('#reset').addEventListener('click', () => measure('重設', tas => tas.forEach(ta => ta.style.height = '40px')));
+        $('#regen').addEventListener('click', render);
+        $('#count').addEventListener('change', render);
+
+        // 打字時只調整正在輸入的那一個：單一元素寫讀一次
+        list.addEventListener('input', e => {
+            if (e.target.tagName === 'TEXTAREA')
+                autosize(e.target);
+        });
+
+        render();
+    </script>
+</body>
+</html>
