@@ -59,6 +59,13 @@ tas.forEach((ta, i) => ta.style.height = heights[i] + 'px'); // 全部寫：等�
   - 打字時只對 `e.target` 調整，不要每次重算全部
   - 數量非常多時，用 `IntersectionObserver` 等 textarea 進入畫面再調整
 
+### chrome DevTools 效能面板錄製
+- 逐一調整在讀取 scrollHeight 花費了大量的時間，也造成頁面凍結 
+![](01.png)
+
+- 批次調整在讀取 scrollHeight 只花費少量時間，頁面仍然流暢
+![](02.png)
+
 ## 讀取也有輕重之分
 
 - 渲染流程分為 Style（樣式計算）→ Layout（重排）→ Paint（重繪）→ Composite（合成），前面有尚未套用的寫入時，讀取只會把流程推進到它需要的那一步：
